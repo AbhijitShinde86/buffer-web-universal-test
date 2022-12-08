@@ -1,0 +1,51 @@
+<section class="py-4" style="background-color: #EEF1FF;">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+          <h5 class="h2color mb-0">{{startup?.productName}}</h5>
+          <button *ngIf="startup" type="button" class="btn px-4" style="color: #4700c6" (click)="onBetaRequests(startup?.startupLink)">Beta requests</button>
+      </div>
+        
+    </div>
+</section>
+
+<section class="deal-list" style="min-height: 500px;">
+    <div class="container">
+      <h5 class="mb-4">Stats</h5>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="p-4 statred rounded">
+                    <h6 class="mb-0 color555">Total Beta Users: {{startup?.betaCount}}</h6>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 statblue rounded">
+                    <h6 class="mb-0 color555">Total Comments: {{startup?.commentCount}}</h6>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 statgreen rounded">
+                    <h6 class="mb-0 color555">Total Feedbacks: {{startup?.feedbackCount}}</h6>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 statyellow rounded">
+                    <h6 class="mb-0 color555">Total Likes: {{startup?.likeCount}}</h6>
+                </div>
+            </div>
+        </div>
+        <h4 class="mt-5">Get Your Badge</h4>
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <img src="/assets/badge.png" width="250">
+            </div>
+            <div class="col-md-9">
+                <p class="mb-3">Copy Below Code to display badge on your website:</p>
+                <div class="light-bg orange-border rounded p-4">
+                    <pre class="mb-0"><code>&lt;a href="https://bufferapps.com/beta-listing/{{startupLink}}" target="_blank"&gt;</code></pre>
+                    <pre class="mb-0"><code>&nbsp;&nbsp;&nbsp;&lt;img src="https://bufferapps.com/assets/badge.png" width="250"></code></pre>
+                    <pre class="mb-0"><code>&lt;/a&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

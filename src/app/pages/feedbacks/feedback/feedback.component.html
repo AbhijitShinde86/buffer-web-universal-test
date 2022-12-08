@@ -1,0 +1,81 @@
+<div *ngIf="feedback">
+    <div class="d-flex mb-3 pt-3">
+        <div class="userprof">
+            <div *ngIf="!feedback.photoUrl"><img src="assets/images/blankUser.webp" alt="{{feedback.firstName}}" ></div>
+            <div *ngIf="feedback.photoUrl">
+                <img src="{{feedback.photoUrl}}" (error) ="$event.target.src = 'assets/images/blankUser.webp'" alt="{{feedback.firstName}}">
+            </div>
+        </div>
+        <div class="userdialogbox w-100 ms-3">
+            <h6 class="fw-bold font9rem">{{feedback.firstName}}
+                <span class="fw-light ms-3" style="font-size: .75rem">{{feedbackAt}}</span>
+                <span *ngIf="isVendor && !feedback.isMaker && feedback.feedbackStatus == 'add'" (click)="onApproveFeedback(feedback._id)"
+                class="badge bg-success ms-2 cursorpointer font7rem">Approve</span>
+            </h6>
+            <div class="ratingoverview">
+                <i [ngClass]="feedback.feedbackRating > 0 && feedback.feedbackRating <= 0.5 ? 'bi bi-star-half' : feedback.feedbackRating > 0.5 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                <i [ngClass]="feedback.feedbackRating > 1 && feedback.feedbackRating <= 1.5 ? 'bi bi-star-half' : feedback.feedbackRating > 1.5 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                <i [ngClass]="feedback.feedbackRating > 2 && feedback.feedbackRating <= 2.5 ? 'bi bi-star-half' : feedback.feedbackRating > 2.5 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                <i [ngClass]="feedback.feedbackRating > 3 && feedback.feedbackRating <= 3.5 ? 'bi bi-star-half' : feedback.feedbackRating > 3.5 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                <i [ngClass]="feedback.feedbackRating > 4 && feedback.feedbackRating <= 4.5 ? 'bi bi-star-half' : feedback.feedbackRating > 4.5 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                <span class="ms-3 cursorpointer colorblue fontsm">{{feedback.feedbackRating}}/5 Rating</span>
+            </div>
+            <div class="pt-3">
+                <div class="mb-4">
+                    <h6>First Impression</h6>
+                    <p class="fontsm" [innerHtml]=feedback.impressionText></p>
+                </div>
+
+                <div class="mb-4">
+                    <h6>Use Cases</h6>
+                    <p class="fontsm" [innerHtml]=feedback.useCasesText></p>
+                </div>
+
+                <div class="mb-4">
+                    <h6>Features</h6>
+                    <p class="fontsm" [innerHtml]=feedback.featuresText></p>
+                </div>
+
+                <div class="mb-4">
+                    <h6>Integration</h6>
+                    <p class="fontsm" [innerHtml]=feedback.integrationText></p>
+                </div>
+
+                <div class="mb-4">
+                    <h6>Ease of Use, UI/UX design</h6>
+                    <p class="fontsm" [innerHtml]=feedback.designText></p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mt-2">
+                <div class="px-1" (click)="onLikeClick()">
+                    <span class="fontsm">{{feedback.likeCount < 0 ? 0 : feedback.likeCount}}</span>
+                    <!-- <i [ngClass]="feedback.userLikeCount == 0  ? 'bi bi-suit-heart ms-1' : 'bi bi-suit-heart-fill ms-1'"></i> -->
+                    <img *ngIf="feedback.userLikeCount == 0 " src="assets/clap.png" alt="like" width="24">
+                    <img *ngIf="feedback.userLikeCount > 0 " src="assets/clap-filled.png" alt="like-filled" width="24">
+                </div>
+                <p class="font7rem ms-3" 
+                    *ngIf="canReply"
+                    (click)="
+                        setActiveFeedback.emit({
+                            id: feedback._id,
+                            type: activeFeedbackType.replying
+                        })"
+                    >Reply
+                </p>
+            </div>
+            <feedback-form
+            [currentUser]="currentUser"
+            [hasCancelButton]="true"
+            *ngIf="isReplying()"
+            submitLabel="Reply"
+            (handleSubmit)="addReply($event)"
+            (handleCancel)="setActiveFeedback.emit(null)"
+            ></feedback-form>
+            <div *ngIf="replies.length > 0">
+                <div *ngFor="let reply of replies">
+                    <feedback-reply [reply]="reply" [isVendor]="isVendor" [currentUser]="currentUser"></feedback-reply>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

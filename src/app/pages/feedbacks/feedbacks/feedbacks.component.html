@@ -1,0 +1,17 @@
+<div class="feedbacks" *ngIf="feedbacks.length > 0">  
+    <div class="card mb-3">
+        <div class="card-body">
+            <feedback *ngFor="let feedback of feedbacks"
+            [feedback]="feedback"
+            [activeFeedback]="activeFeedback"
+            (setActiveFeedback)="setActiveFeedback($event)"
+            [currentUser]="currentUser"
+            [currentStartupId]="currentStartupId"
+            [isVendor]="isVendor"
+            [startupUserId]="startupUserId"
+            ></feedback>
+        </div>
+    </div>
+</div>
+<p  *ngIf="feedbacks.length == 0" class="text-center py-3">No Feedback's on this product yet! Be the first one.</p>
+

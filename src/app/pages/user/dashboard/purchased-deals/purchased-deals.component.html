@@ -1,0 +1,143 @@
+<div class="ms-lg-5">
+    <div class="d-lg-flex align-items-center mb-4">
+      <h5 class="h2color mb-lg-0">Your Deals</h5>
+      <input type="text" class="form-control w-35 mw-100 font9rem ms-lg-5" placeholder="Search deals">
+    </div>
+
+    <div class="transbox font8rem mb-3" *ngFor="let order of orders; let i=index;">
+        <div class="transdetails d-lg-flex align-items-center justify-content-between p-3 border-bottom">
+            <div class="d-lg-flex">
+              <p>Transaction ID: <span>{{order._id}}</span></p>
+              <p class="ms-5">Date: <span>{{order.createdAt}}</span></p>
+              <p class="ms-5">No of Items: <span>{{order.noOfItems}}</span></p>
+            </div>
+            <div class="d-lg-flex">
+              <p>Amount: <span>${{order.totalAmount}}</span></p>
+              <p class="ms-5">Status: {{ order.isPaid ? 'Paid' : 'Not Paid' }}</p>
+              <p class="ms-5 bluecolor" style="cursor: pointer;" (click)="onInvoice(order._id)">View Invoice</p>
+            </div>
+        </div>
+        <table class="table mb-0 text-center">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Product Name</th>
+              <th>Purchased date</th>
+              <th>Redeem by</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="align-baseline">
+            <tr *ngFor="let deal of order.deals">
+              <td>
+                <div *ngIf="deal?.dealId?.imagePaths?.length == 0">  
+                  <img src="assets/gradientbg.png" [alt]="deal.dealId.dealName" style="width: 100px; height: 50px;">
+                </div>
+                <div *ngIf="deal?.dealId?.imagePaths?.length > 0">  
+                  <img src="{{deal?.dealId?.imagePaths[0]?.url_preview}}" [alt]="deal.dealId.dealName" style="width: 100px; height: 50px;">
+                </div>
+              </td>
+              <td>{{deal.dealId.dealName}}</td>
+              <td>{{deal.purchaseDate}}</td>
+              <td>{{deal.redeemDate}}</td>
+              <td class="font8rem m-auto">
+                <div class="dropdown">
+                  <button class="btn border dropdown-toggle fontsm w-50" data-bs-toggle="dropdown">
+                    Select
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" (click)="onProductPage(deal.dealId.dealLink)">Product Page</a></li>
+                    <li><a class="dropdown-item" (click)="onRedeem(deal.dealId.dealLink, order._id)">Redeem</a></li>
+                    <li *ngIf="!deal.isRefunded">
+                      <a class="dropdown-item" (click)="onRefund(order,deal)">Refund</a>
+                    </li>
+                  </ul>
+                </div>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <!-- <div class="row">
+        <div class="col-md-3 pur-products" *ngFor="let deal of deals">
+            <div class="border rounded-3">
+              <div *ngIf="deal?.imagePaths?.length == 0"><img src="assets/gradientbg.png" alt="{{deal?.dealName}}" class="w-100 rounded-3"></div>
+              <div *ngIf="deal?.imagePaths?.length > 0">
+                  <img src="{{deal?.imagePaths[0].url_preview}}" (error) ="$event.target.src = 'assets/gradientbg.png'" alt="{{deal?.dealName}}" class="w-100 rounded-3">
+              </div>
+              <div class="p-3">
+                  <h6>{{deal.dealName}}</h6>
+                  <div class="d-flex align-items-center justify-content-between mb-3">
+                      <p>Status</p>
+                      <p>{{ deal?.isActive ? 'Active' : 'Not Active' }}</p>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-between mb-3">
+                      <p>Purchase Date</p>
+                      <p>{{deal.purchaseDate}}</p>
+                  </div>
+                  <div *ngIf="deal.isRedeemed" class="d-flex align-items-center justify-content-between mb-3">
+                      <p>Redeem By</p>
+                      <p>{{deal.redeemDate}}</p>
+                  </div>
+                  <div class="mb-1">
+                    <div class="dropdown">
+                      <button class="btn border dropdown-toggle fontsm w-100" data-bs-toggle="dropdown">
+                        Select
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" (click)="onRedeem(deal.dealLink, deal.orderId)">Redeem</a></li>
+                        <li><a class="dropdown-item" (click)="onProductPage(deal.dealLink)">Product Page</a></li>
+                        <li><a class="dropdown-item" (click)="onRefund(deal.dealLink, deal.orderId)">Refund</a></li>
+                      </ul>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div> -->
+
+</div>
+
+
+<!-- Modal -->
+<div [ngStyle]="{'display':detailsModalDisplay}" class="modal" tabindex="-1" aria-labelledby="refundModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header px-5">
+        <h5 class="modal-title" id="refundModalLabel">Refund Instructions</h5>
+        <button type="button" class="btn-close" (click)="detailsModalDisplay = 'none'"></button>
+      </div>
+      <div class="modal-body px-5 py-4">
+        <p class="font9rem mb-2">This is a refund process for the product {{toBeRefDealName}}.</p>
+        <p [ngClass]="[ toBeRefCouponAmt > 0 ? 'font9rem mb-2' : 'font9rem mb-5']">
+          The payment of ${{toBeRefAmt}} paid via card and ${{toBeRefRewardAmt}} paid via bufferapps credit will be credited to you.
+        </p>
+        <p class="font9rem mb-5" *ngIf="toBeRefCouponAmt > 0">Coupon amount ${{toBeRefCouponAmt}} will less.</p>
+        <div class="mb-3">
+          <h6 class="mb-1">1) If you paid via credit/debit card</h6>
+          <p class="font9rem">The refund will be credited to your bank account within 5-10 business days.</p>
+        </div>
+        <div class="mb-3">
+          <h6 class="mb-1">2) If you paid via BufferApps credits</h6>
+          <p class="font9rem">Your credits will be added to your BufferApps Account.</p>
+        </div>
+        <div class="mb-4">
+          <h6 class="mb-1">3) If you choose to refund via BufferApps credits</h6>
+          <p class="font9rem">The refund amount will be immediately converted to credits. And will be added to your BufferApps account.</p>
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox"  [(ngModel)]="isFullRefund">
+          <label class="form-check-label font9rem">
+            I want full refund via BufferApps credits.
+          </label>
+        </div>        
+        <button class="btn btn-warning" (click)="onInitiateRefund()" [disabled]="isLoading">Initiate Refund</button>        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- <div class="alert alert-success font9rem" role="alert">
+  The refund has been processed successfully!
+</div> -->

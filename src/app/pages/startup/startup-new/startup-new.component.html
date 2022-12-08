@@ -1,0 +1,151 @@
+<section class="pt-5">
+    <div class="container">      
+    <h1 class="text-center fs-4">Submit Your Product</h1>
+        <form id="signUpForm" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            <div class="form-header d-flex mb-4">
+                <span class="stepIndicator" [ngClass]="curStep == 1 ? 'active' : curStep == 2 ? 'finish' : ''">General</span>
+                <span class="stepIndicator" [ngClass]="curStep == 2 ? 'active' : ''">Details</span>
+            </div>
+        
+            <div class="step" *ngIf="curStep == 1">
+                <p class="text-center mb-4">Tell us about your product</p>
+                <div class="mb-3">
+                    <label>Product Name</label>
+                    <input type="text" formControlName="productName" placeholder="Product Name" 
+                    [ngClass]="[submitted && f.productName.errors ? 'is-invalid' : '',  submitted && !f.productName.errors ? 'is-valid' : '']" 
+                    />
+                    <div *ngIf="submitted && f.productName.errors" class="invalid-feedback">
+                        <div *ngIf="f.productName.errors.required">Product Name is required</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Describe your product in one sentence.</label>
+                    <input type="text" placeholder="Product tagline etc" formControlName="shortDesc"
+                    [ngClass]="[submitted && f.shortDesc.errors ? 'is-invalid' : '',  submitted && !f.shortDesc.errors ? 'is-valid' : '']" 
+                    />
+                    <div *ngIf="submitted && f.shortDesc.errors" class="invalid-feedback">
+                        <div *ngIf="f.shortDesc.errors.required">Product tagline is required</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Website</label>
+                    <input type="text" placeholder="https://www.website.com"  formControlName="websiteUrl"
+                    [ngClass]="[submitted && f.websiteUrl.errors ? 'is-invalid' : '',  submitted && !f.websiteUrl.errors ? 'is-valid' : '']" 
+                    />
+                    <div *ngIf="submitted && f.websiteUrl.errors" class="invalid-feedback">
+                        <div *ngIf="f.websiteUrl.errors.required">Website is required</div>
+                        <div *ngIf="f.websiteUrl.errors.pattern">Please enter valid website url</div>   
+                    </div>
+                </div>
+                <div class="mb-3 submitquill">
+                    <label>Product Description</label>
+                    <!-- <textarea rows="5" placeholder="Describe your product in brief"  formControlName="description"
+                    [ngClass]="[submitted && f.description.errors ? 'is-invalid' : '',  submitted && !f.description.errors ? 'is-valid' : '']" 
+                    ></textarea> -->
+                    <ng-container *ngIf="isBrowser">
+                        <quill-editor [modules]="quillConfig" placeholder="Product Description" formControlName="description" [styles]="{height: 'auto', border: '1px solid #ccc' }"  ></quill-editor>
+                    </ng-container>
+                    <div *ngIf="submitted && f.description.errors" class="invalid-feedback" style="display: block;">
+                        <div *ngIf="f.description.errors.required">Product description is required</div>                     
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Facebook URL</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text font9rem">facebook.com/</span>
+                        <input type="text" class="form-control padding12" formControlName="facebookUrl" placeholder="Facebook URL"
+                        style="border-top-left-radius: 0; border-bottom-left-radius: 0; width: 0%;"/>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Twitter URL</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text font9rem">twitter.com/</span>
+                        <input type="text" class="form-control padding12" formControlName="twitterUrl" placeholder="Twitter URL"
+                        style="border-top-left-radius: 0; border-bottom-left-radius: 0; width: 0%;"/>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>LinkedIn URL</label>
+                    <div class="input-group mb-3">
+                        <!-- <span class="input-group-text font9rem">linkedin.com/in/</span> -->
+                        <input type="text" class="form-control padding12" formControlName="linkedinUrl" placeholder="LinkedIn URL"
+                        style="border-top-left-radius: 0; border-bottom-left-radius: 0; width: 0%;"/>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="step" *ngIf="curStep == 2">
+                <p class="text-center mb-4">Some More details</p>
+                <div class="mb-3">
+                    <label>Status</label>
+                    <select formControlName="prodcutStatus" class="form-select"
+                        [ngClass]="[submitted && f.prodcutStatus.errors ? 'is-invalid' : '',  submitted && !f.prodcutStatus.errors ? 'is-valid' : '']"
+                    >
+                      <option value="RL">Recently Launched</option>
+                      <option value="BT">Beta</option>
+                      <option value="CS">Coming Soon</option>
+                    </select>
+                    <div class="invalid-feedback" *ngIf="submitted && f.prodcutStatus.errors?.required">
+                      Status is required
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Categories</label>
+                    <select formControlName="markets" class="form-select"
+                    [ngClass]="[submitted && f.markets.errors ? 'is-invalid' : '',  submitted && !f.markets.errors ? 'is-valid' : '']"
+                    >
+                        <option *ngFor="let market of marketsList" [ngValue]="market._id" selected>{{market.marketName}}</option>
+                    </select>
+                    <div class="invalid-feedback" *ngIf="submitted && f.markets.errors?.required">
+                        Category is required
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Founder Note</label>
+                    <!-- <textarea rows="5" placeholder="Founder Note"  formControlName="founderNote"></textarea> -->
+                    <ng-container *ngIf="isBrowser">
+                        <quill-editor [modules]="quillConfig" placeholder="Product Description" formControlName="founderNote" [styles]="{height: '125px', border: '1px solid #ccc' }"  ></quill-editor>
+                    </ng-container>
+                </div>
+                <div class="mb-3">
+                    <label>Offer for bufferapps community</label>
+                    <textarea rows="5" placeholder="Access to beta product, could be an invite link, discount code etc" formControlName="offers"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label>Upload Images (800 x 450)</label>
+                        <div class="gallery-uploader-wrap">
+                            <label class="uploader-img">
+                            <input type="file"  id="file-upload" formControlName="imagePaths" multiple  (change)="onFileChange($event)" #imageFile > 
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="#999" width="32" height="32" viewBox="0 0 24 24"> <circle cx="12" cy="12" r="3"/> <path d="M16.83 4L15 2H9L7.17 4H2v16h20V4h-5.17zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                            </svg> 
+                            </label>
+                            <div *ngFor='let image of images; let i = index;'>
+                            <label class="uploader-img">
+                                <img width="100" [src]="image.url">
+                            </label>
+                            <i class="bi bi-x-circle" (click)="removeImage(i)" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                </svg>
+                            </i>
+                            </div>                              
+                        </div>                       
+                        <div *ngIf="submitted && f.imagePaths.errors" class="invalid-feedback2">
+                            <div *ngIf="f.imagePaths.errors.required">This field is required.</div>
+                        </div>
+                        <div *ngIf="submitted && !f.imagePaths.errors " class="invalid-feedback2">
+                            <div *ngIf="f.images?.value?.length == 0">This field is required.</div>
+                            <div *ngIf="f.images?.value?.length > 4">Maximum 4 images allowed.</div>
+                        </div>
+                </div>
+            </div>
+        
+            <div class="form-footer d-flex">
+                <button type="button" id="prevBtn" *ngIf="curStep == 2" (click)="onPreviousClick()">Previous</button>
+                <button type="submit" id="nextBtn" *ngIf="curStep == 1 && isIntervalLaunched">Next</button>
+                <button type="submit" id="submitBtn" *ngIf="curStep == 2 && isIntervalLaunched" [disabled]="isLoading">Submit</button>
+            </div>
+        </form>
+    </div>
+</section>

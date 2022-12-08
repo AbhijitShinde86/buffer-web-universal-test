@@ -1,0 +1,41 @@
+<div class="ms-lg-5">
+    <h5 class="h2color mb-4 text-center">Credits</h5>
+
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <div class="card light-bg">
+                <div class="card-body p-3 p-lg-5">
+                    <h5 class="mb-3">Credit Balance</h5>
+                    <p class="font9rem mb-3">Your Balance: <span class="badge bg-success ms-3 fontrem">${{curUserData?.balRewardAmt | number : '1.2-2'}}</span></p>
+
+                    <div class="mb-5">
+                        <p class="mb-2">Note:</p>
+                        <ul>
+                            <li class="font9rem mb-1">Your Credit never expires.</li>
+                            <li class="font9rem">Credits can not be shared to another account or person.</li>
+                        </ul>
+                    </div>
+
+                    <div >
+                        <h6>Redeem Gift Card</h6>
+                        <div class="input-group mt-4">
+                            <form id="giftCardForm" style="width: 100%;" [formGroup]="giftCardForm" (ngSubmit)="onSubmit()">
+                                <input type="text" class="form-control" formControlName="giftCardNo" placeholder="Your gift card no"
+                                    [ngClass]="[submitted && f.giftCardNo.errors ? 'is-invalid' : '',  submitted && !f.giftCardNo.errors ? 'is-valid' : '']" 
+                                />
+                                <div *ngIf="submitted && f.giftCardNo.errors" class="invalid-feedback">
+                                    <div *ngIf="f.giftCardNo.errors.required">Gift card no is required</div>
+                                    <!-- <div *ngIf="f.giftCardNo.errors.minlength">Invalid gift card no</div>     
+                                    <div *ngIf="f.giftCardNo.errors.maxlength">Invalid gift card no</div>      -->
+                                </div>
+                                <button class="btn btn-primary" type="submit">Redeem</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>

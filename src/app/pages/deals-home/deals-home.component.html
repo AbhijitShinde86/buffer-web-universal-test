@@ -1,0 +1,48 @@
+<div style="min-height: 500px;">    
+  <div *ngFor="let grpItem of dealsGroupList">
+    <section class="py-4">
+        <div class="container">
+           
+            <h4 class="fw-bold h2color mb-0 pb-4">{{getListName(grpItem._id)}}</h4>
+            <div class="row">
+  
+                <div class="col-md-3" *ngFor="let deal of grpItem.list" >
+                  <app-deal-item [deal]="deal"></app-deal-item>
+                  
+                  <!-- <div class="border rounded-3 dealcard position-relative" style="cursor:pointer;" (click)="onDealClick(deal.dealLink)">
+                    <div class="ribbon" *ngIf="deal.isPremium"><span class="font8rem fw-bold">Premium</span></div>
+                    <div class="position-relative">
+                      <p class="offerends fontsm" *ngIf="deal.remainDays <= 15 ">Offer Ends In {{deal.remainDays}} Days</p>
+                      <div *ngIf="deal.imagePaths?.length == 0"><img src="assets/gradientbg.png" alt="{{deal.dealName}}" class="w-100 rounded-3"></div>
+                      <div *ngIf="deal.imagePaths?.length > 0">
+                          <img src="{{deal.imagePaths[0].url_preview}}" (error) ="$event.target.src = 'assets/gradientbg.png'" alt="{{deal.dealName}}" class="w-100 rounded-3">
+                      </div>
+                    </div>
+                    <div class="p-3">
+                        <h5>{{deal.dealName}}</h5>
+                        <p class="font8rem" style="min-height: 40px; max-height: 80px;">{{deal.shortDesc}}</p>
+                        <span *ngIf="deal.isFree && deal.plans.length == 0" class="badge bg-success mt-2 font7rem">Freebie</span>
+                        <span *ngIf="deal.plans.length > 0 " class="badge bg-primary mt-2 font7rem">{{deal.plans[0].planName}}</span>
+                        <div class="ratingoverview mt-2">
+                          <i [ngClass]="deal.dealRating > 0 && deal.dealRating <= 0.5 ? 'bi bi-star-half' : deal.dealRating > 0.5 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                          <i [ngClass]="deal.dealRating > 1 && deal.dealRating <= 1.5 ? 'bi bi-star-half' : deal.dealRating > 1.5 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                          <i [ngClass]="deal.dealRating > 2 && deal.dealRating <= 2.5 ? 'bi bi-star-half' : deal.dealRating > 2.5 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                          <i [ngClass]="deal.dealRating > 3 && deal.dealRating <= 3.5 ? 'bi bi-star-half' : deal.dealRating > 3.5 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                          <i [ngClass]="deal.dealRating > 4 && deal.dealRating <= 4.5 ? 'bi bi-star-half' : deal.dealRating > 4.5 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                          <span *ngIf="deal.reviewCount > 0" class="ms-3 cursorpointer colorblue font8rem">{{deal.reviewCount}} Reviews</span>
+                        </div>
+                        <div *ngIf="deal.plans.length > 0 " class="d-flex align-items-center mt-2">
+                            <h5 class="mb-0 fw-bold">{{deal.plans[0].currencySign}}{{deal.plans[0].price}}</h5>
+                            <p class="ms-2 text-decoration-line-through fontsm" style="color: #9f9c9c;">{{deal.plans[0].currencySign}}{{deal.plans[0].discPrice}}</p>
+                        </div>
+                    </div>
+                  </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+  </div>
+    <div class="py-4 text-center" *ngIf="isShowLoadMore">
+        <button class="btn btn-neutral fontsm">Load More</button>
+    </div>
+</div>

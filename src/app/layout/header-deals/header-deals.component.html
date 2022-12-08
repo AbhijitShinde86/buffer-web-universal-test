@@ -1,0 +1,11 @@
+<div class="d-lg-flex">   
+    <li class="nav-item" *ngIf="userData && userData?.dcnt == 0">
+        <a class="nav-link btn btn-neutral" aria-current="page" (click)="onSubmitDealsClick()">+ Submit Deal</a>
+    </li>
+    <li class="nav-item" *ngIf="userData?.dcnt > 0">
+        <a class="nav-link btn btn-neutral" aria-current="page" (click)="onVendorClick()">Vendor</a>
+    </li>
+    <li class="nav-item" *ngIf="userData">
+        <a class="nav-link btn" aria-current="page" (click)="onCartClick()">Cart ( {{ cartCount }} )</a>
+    </li>
+</div>

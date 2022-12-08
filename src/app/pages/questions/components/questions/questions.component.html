@@ -1,0 +1,19 @@
+<div class="questions" *ngIf="questions.length > 0">  
+  <div>
+    <div>
+      <question
+        *ngFor="let rootQuestion of questions"
+        [question]="rootQuestion"
+        [replies]="[]"
+        [activeQuestion]="activeQuestion"
+        (setActiveQuestion)="setActiveQuestion($event)"
+        [currentUser]="currentUser"
+        [currentDealId]="currentDealId"
+        [isVendor]="isVendor"
+        [dealUserId]="dealUserId"
+      >
+      </question>
+    </div>
+  </div>
+</div>
+<p *ngIf="questions.length == 0" class="text-center py-3">No Question's on this product yet! Be the first one.</p>

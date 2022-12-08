@@ -1,0 +1,93 @@
+
+      .dealcard {
+        box-shadow: 0 3px 3px -1px rgb(10 22 70 / 10%), 0 0 1px 0 rgb(10 22 70 / 6%);
+    }
+    .offerends {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: #d40000;
+      color: #fff;
+      text-align: center;
+    }
+
+    .ribbon {
+      position: absolute;
+      left: -5px; top: -5px;
+      z-index: 1;
+      overflow: hidden;
+      width: 75px; height: 75px;
+      text-align: right;
+    }
+    .ribbon span {
+      color: #FFF;
+      text-align: center;
+      line-height: 20px;
+      transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
+      width: 100px;
+      display: block;
+      background: #ff5722;
+      box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+      position: absolute;
+      top: 19px; left: -20px;
+    }
+    .ribbon span::before {
+      content: "";
+      position: absolute; left: 0px; top: 100%;
+      z-index: -1;
+      border-left: 3px solid #ff5722;
+      border-right: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+      border-top: 3px solid #ff5722;
+    }
+    .ribbon span::after {
+      content: "";
+      position: absolute; right: 0px; top: 100%;
+      z-index: -1;
+      border-left: 3px solid transparent;
+      border-right: 3px solid #ff5722;
+      border-bottom: 3px solid transparent;
+      border-top: 3px solid #ff5722;
+    }
+
+    @media (max-width: 767px) {
+          .carousel-inner .carousel-item > div {
+              display: none;
+          }
+          .carousel-inner .carousel-item > div:first-child {
+              display: block;
+          }
+      }
+
+      .carousel-inner .carousel-item.active,
+      .carousel-inner .carousel-item-next,
+      .carousel-inner .carousel-item-prev {
+          display: flex;
+      }
+
+      /* medium and up screens */
+      @media (min-width: 768px) {
+          
+          .carousel-inner .carousel-item-end.active,
+          .carousel-inner .carousel-item-next {
+            transform: translateX(25%);
+          }
+          
+          .carousel-inner .carousel-item-start.active, 
+          .carousel-inner .carousel-item-prev {
+            transform: translateX(-25%);
+          }
+      }
+
+      .carousel-inner .carousel-item-end,
+      .carousel-inner .carousel-item-start { 
+        transform: translateX(0);
+      }
+      #recipeCarousel .col-md-3 {
+        padding-right: calc(var(--bs-gutter-x) * .5);
+        padding-left: calc(var(--bs-gutter-x) * .5);
+      }
+      .carousel-control-next, .carousel-control-prev {
+        width: 5%;
+      }

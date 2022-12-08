@@ -1,0 +1,13 @@
+<div class="reviews" *ngIf="reviews.length > 0">
+    <review *ngFor="let review of reviews"
+        [review]="review"
+        [activeReview]="activeReview"
+        (setActiveReview)="setActiveReview($event)"
+        [currentUser]="currentUser"
+        [currentDealId]="currentDealId"
+        [isVendor]="isVendor"
+        [dealUserId]="dealUserId"
+    ></review>
+</div>
+
+<p *ngIf="reviews.length == 0" class="text-center py-3">No Reviews's on this product yet! Be the first one.</p>

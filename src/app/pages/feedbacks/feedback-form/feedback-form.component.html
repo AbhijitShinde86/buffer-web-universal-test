@@ -1,0 +1,25 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <div>
+        <div class="d-flex my-3 pb-3 border-bottom">
+            <div class="userprof">
+                <div *ngIf="!currentUser.photoUrl"><img src="assets/images/blankUser.webp" alt="{{currentUser.name}}" ></div>
+                <div *ngIf="currentUser.photoUrl">
+                    <img src="{{currentUser.photoUrl}}" (error) ="$event.target.src = 'assets/images/blankUser.webp'" alt="{{currentUser.name}}">
+                </div>
+            </div>
+            <div class="userdialogbox w-100 ms-3">
+                <h6 class="fw-bold">{{currentUser.firstName}}</h6>
+                <!-- <textarea class="form-control my-3" rows="3" formControlName="title"></textarea> -->
+                <ng-container *ngIf="isBrowser">
+                  <quill-editor [modules]="quillConfig" formControlName="title" [styles]="{height: 'auto', border: 'none' }"  ></quill-editor>
+                </ng-container>
+                <div class="text-end">
+                  <button class="btn btn-pstcom btn-sm" style="margin-right: 5px;">Reply</button>
+                  <button *ngIf="hasCancelButton" type="button" class="btn btn-pstcom btn-sm" (click)="handleCancel.emit()">Cancel</button>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </form>

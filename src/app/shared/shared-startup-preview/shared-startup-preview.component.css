@@ -1,0 +1,14 @@
+.ql-toolbar { 
+    display:none !important;
+}
+
+.ql-snow { 
+    display:none !important;
+}
+
+.comment-msg{
+    text-align: center; 
+    padding: 10px; 
+    cursor: pointer; 
+    color: cornflowerblue;
+}

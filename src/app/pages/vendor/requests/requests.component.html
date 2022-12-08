@@ -1,0 +1,72 @@
+<!-- <section class="py-4" style="background-color: #EEF1FF;">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+          <h5 class="h2color mb-0">LinkTube</h5>
+      </div>
+        
+    </div>
+</section> -->
+
+
+<section class="deal-list py-4" style="min-height: 500px;">
+    <div class="container">
+        <!-- <p class="text-decoration-underline cursorpointer" (click)="onGoToBack()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Go back
+        </p> -->
+        <div class="mt-4">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Beta Users</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Beta User Requests</button>
+              </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <table class="w-100 userreqtable">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let request of getRequests('APV')" >
+                      <td>{{request?.betaReqAdminId?.name}}</td>
+                      <td>{{request?.betaUserId?.username}}</td>
+                      <td>{{request?.betaReqAdminId?.email}}</td>
+                      <td class="reqdetails" (click)="onSelectedRequestClick(request._id)" >Show details</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <table class="w-100 userreqtable">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let request of getRequests('ADD')" >
+                      <td>{{request?.betaReqAdminId?.name}}</td>
+                      <td>{{request?.betaUserId?.username}}</td>
+                      <td>{{request?.betaReqAdminId?.email}}</td>
+                      <td class="reqdetails" (click)="onSelectedRequestClick(request._id)" >Show details</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+    </div>
+</section>

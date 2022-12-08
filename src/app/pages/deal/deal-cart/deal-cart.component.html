@@ -1,0 +1,158 @@
+<section class="pt-5" style="min-height: 500px;">
+  <div class="container">
+    <p class="mb-3 cursorpointer" (click)="onGoBack()"><i class="bi bi-arrow-left-circle-fill me-2"></i> Go back</p>
+    <h3 class="fw-bold mb-4">Cart</h3>
+    <div class="row">
+      <div class="col-md-8">
+        <!-- <table class="table cart-table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Plan</th>
+              <th>Price</th>
+              <th>Quntity</th>
+              <th>Amount</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let deal of deals; let i = index;">
+              <td>{{deal.dealName}}</td>
+              <td>
+                <select class="selectquntity" (change)="onPlanChange(i,$event.target.value)">
+                  <option *ngFor="let plan of deal.plans" 
+                  [value]='plan._id' [selected]="deal.planId == plan._id"
+                  >{{plan.planName}}</option>
+                </select>    
+              </td>
+              <td>{{deal.currencySign}}{{deal.discPrice}}</td>
+              <td>
+                <select class="selectquntity" (change)="onQuantityChange(i,$event.target.value)">
+                  <option *ngFor="let qty of qtyList" 
+                  [ngValue]="qty" [selected]="deal.quantity == qty"
+                  >{{qty}}</option>
+                </select>                        
+              </td>
+              <td>{{deal.currencySign}}{{deal.amount}}</td>
+              <td class="text-center"><i class="bi bi-trash3 red cursorpointer" (click)="deletDeal(deal._id)"></i></td>
+            </tr>
+          </tbody>
+        </table> -->
+        
+        <div class="cart border border-top-0" *ngFor="let deal of deals; let i = index;">
+          <div class="d-lg-flex p-4 border-top mb-3">
+            <div class="width25">
+              <div *ngIf="!deal?.dealImage">    
+                <div class="carousel-item active">             
+                    <img src="assets/gradientbg.png" class="d-block w-100 rounded">
+                </div>   
+              </div>
+              <div *ngIf="deal?.dealImage">  
+                <img class="d-none d-lg-block" src="{{deal?.dealImage}}" alt="" width="150"> 
+              </div>          
+
+            </div>
+            <div class="width30 mw-100">
+              <h6>{{deal.dealName}}</h6>
+              <div class="d-flex d-lg-block align-items-center">
+                <p class="mb-lg-2">{{deal.currencySign}}{{deal.discPrice}}</p>
+                <p class="font8rem color555 ms-3 ms-lg-0">Plan: {{deal?.planName}}</p>
+              </div>
+            </div>
+            <div class="width20 mw-100">
+              <div>
+                <label class="form-label font8rem mb-1">Plan</label>
+                <select class="form-select font8rem" (change)="onPlanChange(i,$event.target.value)">
+                  <option *ngFor="let plan of deal.plans" 
+                  [value]='plan._id' [selected]="deal.planId == plan._id"
+                  >{{plan.planName}}</option>
+                </select>    
+              </div>
+            </div>
+            <div class="ms-lg-4 width25 mw-100">
+              <div>
+                <label class="form-label font8rem mb-1">Quantity</label>
+                <select class="form-select font8rem" (change)="onQuantityChange(i,$event)">
+                  <option *ngFor="let qtyl of qtyList" 
+                  [value]="qtyl.qty" [selected]="deal.quantity == qtyl.qty"
+                  >{{qtyl.qtyName}}</option>
+                </select>    
+              </div>
+              <p class="font8rem my-2">Total Amount: <span class="h6">{{deal.currencySign}}{{deal.amount}}</span></p>
+              <p class="red font7rem cursorpointer" (click)="deleteDeal(deal._id)"><i class="bi bi-trash3 red"></i>Remove</p>
+            </div>
+            
+          </div>          
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="rounded">
+          <div><h4 class="orderbox p-3 mb-0 rounded-top">Order</h4></div>
+          <div class="p-3 border rounded-bottom">            
+            <div class="">
+              <div class="d-flex">
+                  <input type="text" class="form-control" placeholder="Coupon code" [disabled]="cartPromo.code" 
+                  [(ngModel)]="couponCode" style='text-transform:uppercase' (input)="couponCode = couponCode.toUpperCase()">
+                  <button *ngIf="!cartPromo.code" class="btn btn-primary w-50 fontsm ms-2" (click)="onApplyPromo()">Apply Code</button>
+                  <button *ngIf="cartPromo.code" class="btn btn-warning w-50 fontsm ms-2" (click)="onRemovePromo()">Remove</button>
+              </div>
+            </div>
+            <!-- <em class="font8rem greensucess pb-3">"FLAT20" code appiled sucessfully.</em> -->
+            <em *ngIf="couponError" class="font8rem red mb-3">{{couponError}}</em>
+
+            <div class="d-flex align-items-center justify-content-between mb-2" style="margin-top: 1rem">
+              <p class="fontsm">Subtotal</p>
+              <p>{{appCurSign}}{{subTotal}}</p>
+            </div>            
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <p class="fontsm">Coupon</p>
+              <p class="cartgreen">-{{appCurSign}}{{discAmt}}</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <p class="fontsm">Reward</p>
+              <p class="cartgreen">-{{appCurSign}}{{rewardAmt}}</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <p class="fontsm">Total</p>
+              <p>{{appCurSign}}{{totalAmt}}</p>
+            </div>
+            <div class="d-flex">
+              <div class="position-relative w-100">
+                <label class="form-label font8rem">Select Country</label>
+                <!-- <input type="search" class="form-control fontsm" placeholder="Select/Search country"
+                [(ngModel)]="searchtext" (ngModelChange)="onSearchTextChange()" onclick="onSearchCountryBoxClick();" >
+                <div id="searchcountry" class="countrysearch searchresults" style="display: none;">
+                  <ul class="p-0 list-unstyled mb-0 cntrylist" *ngIf="searchList.length > 0">
+                    <li *ngFor="let search of searchList" [routerLink]="search.url" onclick="onSearchCountryClick()">
+                      {{search.name}}
+                    </li>
+                  </ul>
+                </div> -->                
+                <select class="form-select font8rem" (change)="onCountryChange($event.target.value)" [disabled]="countryId">
+                  <option value="">Select country</option>
+                  <option *ngFor="let country of countryList" 
+                  [value]="country._id" [selected]="countryId == country._id"
+                  >{{country.countryName}}</option>
+                </select>    
+              </div>
+              <!-- <div class="width20">
+                <label for="" class="form-label font8rem">currency</label>
+                <input type="text" class="form-control fontsm" [value]="countryData?.currencyCode | uppercase" disabled>
+              </div> -->
+            </div>
+            
+            <div class="pt-3">
+              <button class="btn btn-success fontsm mb-3 w-100" (click)="onPlaceOrder()" [disabled]="!countryData || subTotal <= 0 || isLoading">
+                {{ subTotal > 0 ? totalAmt > 0 ? 'Checkout' : 'Place Order' : 'Checkout' }}
+              </button>
+              <button class="btn btn-outline-secondary fontsm w-100" (click)="onContinueShopping()">Continue Shopping</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  
+<!-- <button class="btn btn-success fontsm mb-3 w-100" (click)="onCreateCheckouSession()" [disabled]="totalAmt <= 0">Place Order</button> -->

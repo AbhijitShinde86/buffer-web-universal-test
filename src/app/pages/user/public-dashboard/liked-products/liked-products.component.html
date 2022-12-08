@@ -1,0 +1,10 @@
+<div class="ms-lg-5">
+    <h5 class="h2color mb-4">Liked Products</h5>
+
+    <div class="row" *ngIf="productsData?.length > 0">
+        <div class="col-md-3" *ngFor="let startup of productsData">
+            <app-startup-item [startup]="startup" (setLike)="setLike($event)"></app-startup-item>
+        </div>
+    </div>
+
+</div>

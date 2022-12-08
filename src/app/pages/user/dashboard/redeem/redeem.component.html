@@ -1,0 +1,34 @@
+<section class="py-5">
+    <div class="container">
+        <div class="light-bg redeembox">            
+            <p class="mb-3 cursorpointer" (click)="onGoToDeals()"><i class="bi bi-arrow-left-circle-fill me-2"></i> Go to deals</p>
+            <div> <!-- *ngIf="dealOrder" -->
+                <h3 class="mb-5 text-center">Redeem Your Deal</h3>
+                <h4 class="mb-2 fw-bold text-center">{{dealOrder?.dealName}}</h4>
+                <p class="mb-5 text-center font8rem primary-color cursorpointer" (click)="onViewProduct(dealOrder?.dealLink)">View Product Details</p>
+                <div class="text-center">
+                    <p class="font9rem mb-4">Redemption Code</p>
+                    <div class="input-group mb-3 w-50 m-auto" *ngFor="let code of dealOrder?.rewardCodes">
+                        <input type="text" readonly="readonly" class="form-control" [value]="code.rewardCode">
+                        <button class="btn btn-primary" type="button" (click)="copyRewardCode(code.rewardCode)">Copy</button>
+                    </div>
+                    <div class="mt-4">
+                        <button class="btn btn-pstcom px-5" (click)="onGoToProduct(dealOrder?.websiteUrl)">Go To Product</button>
+                    </div>
+                </div>
+                <div class="pt-5">
+                    <h5>Redemption Intructions</h5>
+                    <div class="mt-4 dealterms">
+                        <ul>
+                          <li>Lifetime access to LinkTube</li>
+                          <li>All future Pro Plan updates</li>
+                          <li>You must redeem your code(s) within 60 days of purchase</li>
+                          <li>Stack up to 5 codes</li>
+                          <li>GDPR compliant</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

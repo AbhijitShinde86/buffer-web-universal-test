@@ -1,0 +1,321 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand p-0" routerLink="/"><img src="assets/ba-logo.jpg" style="width: 160px;"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="d-flex mx-auto mw-100 w-35 position-relative mt-3 mt-lg-0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search searchicon" viewBox="0 0 16 16">
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+      </svg>
+        <input class="form-control me-lg-2 ps-5" type="search" placeholder="Search" aria-label="Search" 
+        [(ngModel)]="searchtext" (ngModelChange)="onSearchTextChange()" onclick="onSerchBoxClick();" > <!--  -->
+        <div id="searchshow" class="searchresults rounded-3" style="display: none;">
+          <ul class="p-0 list-unstyled mb-0" style="padding: 14px !important;" *ngIf="searchList.length > 0">
+            <li *ngFor="let search of searchList" [routerLink]="search.url" onclick="onSerchClick()">
+              {{search.name}}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <!-- <li class="nav-item" *ngIf="!isDealsPage">
+          <a class="nav-link text-center" (click)="onDealsClick()">Deals</a>
+        </li> -->
+        <li class="nav-item" *ngIf="!isBetaPage">
+          <a class="nav-link text-center orangebg me-2" (click)="onBetaClick()">Beta Launch</a>
+        </li>
+        <app-header-beta *ngIf="isBetaModule" [userData]="userData"></app-header-beta>
+        <app-header-deals *ngIf="isDealsModule" [userData]="userData"></app-header-deals>
+        <li class="nav-item ms-2" *ngIf="!userData">
+          <button class="nav-link btn btn-primary text-white" (click)="onShowSignUpModal()"> Sign In</button>
+        </li>
+        <li class="nav-item" *ngIf="userData">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0 justify-content-center" href="#" data-bs-toggle="dropdown">
+            <span class="dropdown-toggle ps-2">{{ userData.name }}</span>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="right: auto; top: auto;">
+            <li>
+              <a class="dropdown-item d-flex align-items-center" (click)="onProfileClick()">
+                <i class="bi bi-person"></i>
+                <span class="fontsm ms-2">Profile</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" routerLink="/user/dashboard/profile">
+                <i class="bi bi-person"></i>
+                <span class="fontsm ms-2">Account</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center backwardAnchor" (click)="onLogout()">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="fontsm ms-2">Sign Out</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Sign In Modal -->
+<div [ngStyle]="{'display':signUpModalDisplay}" class="modal" id="signinmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <button type="button" class="btn-close closepopup" (click)="signUpModalDisplay = 'none'"></button>
+      </div>
+      <div class="modal-body p-5 pt-3 text-center">
+        <h5 class="fw-bold">SignIn to BufferApps</h5>
+        <p class="fontsm pb-4">Discover, Try and Test New Products.</p>
+
+        <div class="card mb-3 signinform" *ngIf="!isForgotMode">
+          <div class="card-body">
+            <div class="pb-2">
+              <h5 class="card-title text-center pb-0 fs-4">
+                {{ 
+                  isOTPSent ? 'Verify OTP' : 
+                  isLoginMode ? 'SignIn' : 
+                  'Create an Account' 
+                }}
+               </h5>
+              <p class="text-center small">
+                {{ 
+                  isOTPSent ? 'OTP Has Been Sent To Your Registered Email Id'  :
+                  isLoginMode ? 'Enter your Email Id & password to login' : 
+                  'Enter your personal details to create account' 
+                }}
+                </p>
+            </div>
+            
+            <div *ngIf="message" class="alert alert-success alert-dismissible fade show" role="alert">
+              {{message}}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{error}}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div *ngIf="isLoginMode && !isOTPSent">
+              <form class="row g-3 needs-validation" novalidate [formGroup]="loginForm" (ngSubmit)="onLogin()">
+
+                <div class="col-12">
+                  <div class="input-group has-validation">
+                      <!-- <span class="input-group-text" id="inputGroupPrepend">@</span> -->
+                      <input type="text" class="form-control" autocomplete="nope" formControlName="email" placeholder="Email Id"
+                      [ngClass]="[submitted && logF.email.errors ? 'is-invalid' : '',  submitted && !logF.email.errors ? 'is-valid' : '']"
+                      myAutofocus/>
+                      <div *ngIf="submitted && logF.email.errors" class="invalid-feedback" style="text-align: left">
+                          <div *ngIf="logF.email.errors.required"><sup>*</sup>Email Id is required</div>
+                          <div *ngIf="logF.email.errors?.pattern ">
+                            Enter valid Email Id
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                    <input type="password" class="form-control" autocomplete="new-password" formControlName="password" placeholder="Password" 
+                    [ngClass]="[submitted && logF.password.errors ? 'is-invalid' : '',  submitted && !logF.password.errors ? 'is-valid' : '']" />
+                    <div *ngIf="submitted && logF.password.errors" class="invalid-feedback" style="text-align: left">
+                        <div *ngIf="logF.password.errors.required"><sup>*</sup>Password is required</div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-12">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                  </div>
+                </div> -->
+                <div class="col-12">
+                  <button class="btn btn-primary w-100 signinbtn" type="submit"[disabled]="isLoading">{{ isLoading ? 'Please wait...' : 'Login' }}</button>
+                </div>
+                <div class="col-12 d-flex align-items-center justify-content-between">
+                  <p class="small mb-0">Don't have account? </p>
+                  <p class="small mb-0"><a (click)="onSwitchMode()" 
+                  style="cursor: pointer; color: #4b2aad; text-decoration: none;">Create an account</a></p>
+                </div>
+                <div class="col-12 align-items-center justify-content-between">
+                  <p class="small mb-0"><a (click)="onForgotPassword()" 
+                  style="cursor: pointer; color: #4b2aad; text-decoration: none; float: right;">Forgot Password ?</a></p>
+                </div>                
+              </form>
+            </div>
+            
+            <div *ngIf="!isLoginMode && !isOTPSent">
+              <form class="row g-3 needs-validation" novalidate [formGroup]="registerForm" (ngSubmit)="onRegister()">
+                <div class="col-12">
+                  <input type="test" class="form-control" formControlName="firstName" placeholder="First Name" myAutofocus/>
+                </div>
+                <div class="col-12">
+                  <input type="test" class="form-control" formControlName="lastName" placeholder="Last Name" />
+                </div>
+                <div class="col-12">
+                  <input type="email" class="form-control" formControlName="email" placeholder="Email Id" 
+                  [ngClass]="[submitted && regF.email.errors ? 'is-invalid' : '',  submitted && !regF.email.errors ? 'is-valid' : '']" 
+                   />
+                  <div *ngIf="submitted && regF.email.errors" class="invalid-feedback" style="text-align: left">
+                      <div *ngIf="regF.email.errors.required"><sup>*</sup>Email Id is required</div>
+                      <div *ngIf="regF.email.errors?.pattern"> Enter valid Email Id </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="password" class="form-control" autocomplete="new-password" formControlName="password" placeholder="Password" 
+                  [ngClass]="[submitted && regF.password.errors ? 'is-invalid' : '',  submitted && !regF.password.errors ? 'is-valid' : '']" />
+                  <div *ngIf="submitted && regF.password.errors" class="invalid-feedback" style="text-align: left">
+                      <div *ngIf="regF.password.errors.required"><sup>*</sup>Password is required</div>
+                      <div *ngIf="regF.password.errors.minlength">Password must be at least 6 characters</div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Confirm Password"
+                  [ngClass]="[submitted && regF.confirmPassword.errors ? 'is-invalid' : '',  submitted && !regF.confirmPassword.errors ? 'is-valid' : '']" />
+                  <div *ngIf="submitted && regF.confirmPassword.errors" class="invalid-feedback" style="text-align: left">
+                      <div *ngIf="regF.confirmPassword.errors.required"><sup>*</sup>Confirm Password is required</div>
+                      <div *ngIf="regF.confirmPassword.errors.minlength">Confirm Password must be at least 6 characters</div>
+                      <div *ngIf="regF.confirmPassword.errors.mustMatch">Passwords must match</div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-primary w-100 signinbtn" type="submit" [disabled]="isLoading">{{ isLoading ? 'Please wait...' : 'Create Account' }} </button>
+                </div>
+                <div class="col-12 d-flex align-items-center justify-content-between">
+                  <p class="small mb-0">Already have an account? </p>
+                  <p class="small mb-0"><a (click)="onSwitchMode()" 
+                    style="cursor: pointer; color: #4b2aad; text-decoration: none;">Log in</a></p>
+                </div>
+              </form>
+            </div>
+             
+            <div *ngIf="isOTPSent">
+              <form class="row g-3 needs-validation" novalidate [formGroup]="otpForm" (ngSubmit)="onOTPFormSubmit()">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="otp"  placeholder="" style="text-align:center;"  
+                  [ngClass]="[submitted && oF.otp.errors ? 'is-invalid' : '',  submitted && !oF.otp.errors ? 'is-valid' : '']"
+                  minlength="6" maxlength="6" numbersOnly myAutofocus />
+                  <div *ngIf="submitted && oF.otp.errors" class="invalid-feedback" style="text-align: left">
+                    <div *ngIf="oF.otp.errors.required"><sup>*</sup>OTP is required</div>
+                    <div *ngIf="oF.otp.errors.minlength">Enter valid OTP</div>
+                    <div *ngIf="oF.otp.errors.maxlength">Enter valid OTP</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <button class="btn btn-primary w-100 signinbtn" type="submit" [disabled]="isLoading">{{ isLoading ? 'Please wait...' : 'Verify OTP' }} </button>
+                </div>
+                <div class="col-6">
+                  <button class="btn btn-primary w-100 signinbtn" type="button" (click)="onResendOTP()">Resend</button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+        <div *ngIf="isForgotMode">
+          <div class="card-body">
+            <div class="pb-2">
+              <h5 class="card-title text-center pb-0 fs-4">Reset your password </h5>
+              <p class="text-center small"> We will send you an OTP to your email id to reset your password. </p>
+            </div>
+            
+            <div *ngIf="message" class="alert alert-success alert-dismissible fade show" role="alert">
+              {{message}}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{error}}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            
+            <div>
+              <form class="row g-3 needs-validation" novalidate [formGroup]="forgotForm" (ngSubmit)="onOTPForgotFormSubmit()">
+                
+                <div class="col-12">
+                  <div class="input-group has-validation">
+                    <!-- <span class="input-group-text" id="inputGroupPrepend">@</span> -->
+                    <input type="text" class="form-control" autocomplete="nope" formControlName="email" placeholder="Email Id"
+                    [ngClass]="[submittedForgot && fgF.email.errors ? 'is-invalid' : '',  submittedForgot && !fgF.email.errors ? 'is-valid' : '']"
+                    myAutofocus/>
+                    <div *ngIf="submittedForgot && fgF.email.errors" class="invalid-feedback">
+                        <div *ngIf="fgF.email.errors.required"><sup>*</sup>Email Id is required</div>
+                        <div *ngIf="fgF.email.errors?.pattern ">
+                          Enter valid Email Id
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="password" class="form-control" autocomplete="new-password" formControlName="password" placeholder="Password" 
+                  [ngClass]="[submitted && fgF.password.errors ? 'is-invalid' : '',  submitted && !fgF.password.errors ? 'is-valid' : '']" />
+                  <div *ngIf="submitted && fgF.password.errors" class="invalid-feedback">
+                      <div *ngIf="fgF.password.errors.required"><sup>*</sup>Password is required</div>
+                      <div *ngIf="fgF.password.errors.minlength">Password must be at least 6 characters</div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Confirm Password"
+                  [ngClass]="[submitted && fgF.confirmPassword.errors ? 'is-invalid' : '',  submitted && !fgF.confirmPassword.errors ? 'is-valid' : '']" />
+                  <div *ngIf="submitted && fgF.confirmPassword.errors" class="invalid-feedback">
+                      <div *ngIf="fgF.confirmPassword.errors.required"><sup>*</sup>Confirm Password is required</div>
+                      <div *ngIf="fgF.confirmPassword.errors.minlength">Confirm Password must be at least 6 characters</div>
+                      <div *ngIf="fgF.confirmPassword.errors.mustMatch">Passwords must match</div>
+                  </div>
+                </div>
+                <div class="col-6" *ngIf="!isOTPSentForgot">
+                  <button class="btn btn-primary w-100 signinbtn" type="submit" [disabled]="fgF.email.errors || fgF.password.errors || fgF.confirmPassword.errors || isLoadingForgot">{{ isLoadingForgot ? 'Please wait...' : 'Send OTP' }} </button>
+                </div>
+                <div class="col-6" *ngIf="!isOTPSentForgot">
+                  <button class="btn btn-primary w-100 signinbtn" type="button" (click)="onCancelForgot()">Cancel</button>
+                </div>
+                <div class="col-12" *ngIf="isOTPSentForgot">
+                  <input type="text" class="form-control" formControlName="otp"  placeholder="" style="text-align:center;"  placeholder="OTP"
+                  [ngClass]="[submittedForgot && fgF.otp.errors ? 'is-invalid' : '',  submittedForgot && !fgF.otp.errors ? 'is-valid' : '']"
+                  minlength="6" maxlength="6" numbersOnly myAutofocus />
+                  <div *ngIf="submittedForgot && fgF.otp.errors" class="invalid-feedback">
+                    <div *ngIf="fgF.otp.errors.required"><sup>*</sup>OTP is required</div>
+                    <div *ngIf="fgF.otp.errors.minlength">Enter valid OTP</div>
+                    <div *ngIf="fgF.otp.errors.maxlength">Enter valid OTP</div>
+                  </div>
+                </div>
+                <div class="col-6" *ngIf="isOTPSentForgot">
+                  <button class="btn btn-primary w-100 signinbtn" type="button" (click)="onResetPassword()" [disabled]="fgF.otp.errors || isLoadingForgot">Reset Password</button>
+                </div>
+                <div class="col-6" *ngIf="isOTPSentForgot">
+                  <button class="btn btn-primary w-100 signinbtn" type="button" (click)="onResendOTPForgot()" [disabled]="isLoadingForgot">Resend</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body p-2 cursorpointer">
+              <div class="d-flex align-items-center justify-content-center" (click)="registerOrLoginWithGoogle()">
+                <img src="assets/images/googleicon.png">
+                <p class="ms-2">Sign In With Google</p>
+              </div>
+          </div>
+          <!-- <asl-google-signin-button type='icon' size='medium'></asl-google-signin-button> -->
+        </div>
+
+        <!-- <div class="card">
+          <div class="card-body p-2 cursorpointer">
+              <div class="d-flex align-items-center justify-content-center" (click)="registerOrLoginWithFacebook()">
+                <img src="assets/images/facebookicon.png">
+                <p class="ms-2">Sign In With Facebook</p>
+              </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

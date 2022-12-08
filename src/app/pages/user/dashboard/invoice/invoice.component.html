@@ -1,0 +1,172 @@
+<section class="py-5" *ngIf="order">
+    <div class="container">
+        <div class="light-bg">            
+            <p class="mb-3 cursorpointer" (click)="onGoToDeals()"><i class="bi bi-arrow-left-circle-fill me-2"></i> Go to deals</p>
+            <div> <!-- *ngIf="dealOrder" -->
+                <div class="invoice p-4" id="print-section">
+                    <div class="invoicebox p-5 border rounded">
+                        <div class="row pb-4 border-bottom">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <h6 class="mb-1 font9rem">Invoice ID</h6>
+                                    <p class="font8rem">{{order?._id}}</p>
+                                </div>
+                                <div class="mb-3">
+                                    <h6 class="mb-1 font9rem">Invoice Date</h6>
+                                    <p class="font8rem">{{order?.createdAt}}</p>
+                                </div>
+                                <div class="mb-3">
+                                    <h6 class="mb-1 font9rem">Payment Type</h6>
+                                    <p class="font8rem">{{order?.paymentType}}</p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 font9rem">Payment Status</h6>
+                                    <p class="font8rem">{{ order?.isPaid ? 'Paid' : 'Not Paid' }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 font9rem">
+                                <h6>Redtag Internet Pvt Ltd.</h6>
+                                <p>A206, Sai arcade, <br> Near Lifeline Hospital, <br> Panvel, Maharashtra <br> 410206</p>
+                            </div>
+                            <div class="col-md-4 font9rem">
+                                <h6>Bill To</h6>
+                                <p> {{order?.userId?.name}} <br> 
+                                    {{order?.userId?.email}}
+                                </p>
+                            </div>
+                        </div>
+        
+                        <div class="ordersummary pt-4">
+                            <h5>Order Summary</h5>
+                            <table class="table ">
+                                <thead>
+                                    <tr class="text-end">
+                                        <th class="text-start">Product</th>
+                                        <th>No of Codes</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-end" *ngFor="let deal of order?.deals">
+                                        <td class="text-start">{{deal?.dealId?.dealName}}</td>
+                                        <td>{{deal?.noOfCodes}}</td>
+                                        <td>${{deal?.discPrice}}</td>
+                                        <td>{{deal?.quantity}}</td>
+                                        <td>${{deal?.amount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+        
+                        <div class="pb-2 border-bottom">
+                            <div class="d-flex align-items-center justify-content-end p-2">
+                                <h6 class="mb-0">Subtotal</h6>
+                                <p class="w-15 text-end">${{order?.subTotalAmount}}</p>
+                            </div>
+                        </div>
+                        <div class="py-2 border-bottom">
+                            <div class="d-flex align-items-center justify-content-end px-2">
+                                <p class="mb-0 font9rem">Discount:</p>
+                                <p class="w-15 text-end">-${{order?.couponAmount}}</p>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-end px-2">
+                                <p class="mb-0 font9rem">Credits Used:</p>
+                                <p class="w-15 text-end">-${{order?.rewardAmount}}</p>
+                            </div>
+                        </div>
+                        <div class="py-3 border-bottom">
+                            <div class="d-flex align-items-center justify-content-end px-2">
+                                <h4 class="mb-0">Total</h4>
+                                <h4 class="mb-0 w-15 text-end">${{order?.totalAmount}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button (click)="downloadAsPDF()">print</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 
+<section class="py-4">
+    <div class="container">
+        <div class="invoice p-4">
+            <div class="invoicebox p-5 border rounded">
+                <div class="row pb-4 border-bottom">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <h6 class="mb-1 font9rem">Invoice ID</h6>
+                            <p class="font8rem">f6a6dfa7-6c47-4742</p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="mb-1 font9rem">Invoice Date</h6>
+                            <p class="font8rem">30 Sep 2022 12:30 UTC</p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="mb-1 font9rem">Payment Type</h6>
+                            <p class="font8rem">Credit Card</p>
+                        </div>
+                        <div>
+                            <h6 class="mb-1 font9rem">Payment Status</h6>
+                            <p class="font8rem">Paid</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 font9rem">
+                        <h6>Redtag Internet Pvt Ltd.</h6>
+                        <p>A206, Sai arcade, <br> Near Lifeline Hospital, <br> Panvel, Maharashtra <br> 410206</p>
+                    </div>
+                    <div class="col-md-4 font9rem">
+                        <h6>Bill To</h6>
+                        <p>Hrushikesh Patil <br> A101, Sarvoday Aangan, Near Wellness Medical, <br>Panvel,<br>Maharashtra, <br> 410206</p>
+                    </div>
+                </div>
+
+                <div class="ordersummary pt-4">
+                    <h5>Order Summary</h5>
+                    <table class="table ">
+                        <thead>
+                            <tr class="text-end">
+                                <th class="text-start">Product</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-end">
+                                <td class="text-start">Linktube</td>
+                                <td>1</td>
+                                <td>$49</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pb-2 border-bottom">
+                    <div class="d-flex align-items-center justify-content-end p-2">
+                        <h6 class="mb-0">Subtotal</h6>
+                        <p class="w-15 text-end">$49</p>
+                    </div>
+                </div>
+                <div class="py-2 border-bottom">
+                    <div class="d-flex align-items-center justify-content-end px-2">
+                        <p class="mb-0 font9rem">Discount:</p>
+                        <p class="w-15 text-end">$10</p>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end px-2">
+                        <p class="mb-0 font9rem">Credits Used:</p>
+                        <p class="w-15 text-end">-$10</p>
+                    </div>
+                </div>
+                <div class="py-3 border-bottom">
+                    <div class="d-flex align-items-center justify-content-end px-2">
+                        <h4 class="mb-0">Total</h4>
+                        <h4 class="mb-0 w-15 text-end">$29</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->

@@ -1,0 +1,75 @@
+<section class="pt-5">
+    <div class="container">      
+    <h1 class="text-center fs-4">Submit Your Product</h1>
+        <form id="signUpForm" [formGroup]="productForm" (ngSubmit)="onSubmit()">        
+            <p class="text-center mb-4">Tell us about your product</p>
+            <div class="mb-3">
+                <label>Product Name</label>
+                <input type="text" formControlName="dealName" placeholder="Product Name" 
+                [ngClass]="[submitted && f.dealName.errors ? 'is-invalid' : '',  submitted && !f.dealName.errors ? 'is-valid' : '']" 
+                />
+                <div *ngIf="submitted && f.dealName.errors" class="invalid-feedback">
+                    <div *ngIf="f.dealName.errors.required">Product Name is required</div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Describe your product in one sentence.</label>
+                <input type="text" placeholder="Product tagline etc" formControlName="shortDesc"
+                [ngClass]="[submitted && f.shortDesc.errors ? 'is-invalid' : '',  submitted && !f.shortDesc.errors ? 'is-valid' : '']" 
+                />
+                <div *ngIf="submitted && f.shortDesc.errors" class="invalid-feedback">
+                    <div *ngIf="f.shortDesc.errors.required">Product tagline is required</div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Website</label>
+                <input type="text" placeholder="https://www.website.com"  formControlName="websiteUrl"
+                [ngClass]="[submitted && f.websiteUrl.errors ? 'is-invalid' : '',  submitted && !f.websiteUrl.errors ? 'is-valid' : '']" 
+                />
+                <div *ngIf="submitted && f.websiteUrl.errors" class="invalid-feedback">
+                    <div *ngIf="f.websiteUrl.errors.required">Website is required</div>
+                    <div *ngIf="f.websiteUrl.errors.pattern">Please enter valid website url</div>   
+                </div>
+            </div>
+            <div class="mb-3 submitquill">
+                <label>Product Description</label>
+                <!-- <textarea rows="5" placeholder="Describe your product in brief"  formControlName="description"
+                [ngClass]="[submitted && f.description.errors ? 'is-invalid' : '',  submitted && !f.description.errors ? 'is-valid' : '']" 
+                ></textarea> -->
+                <ng-container *ngIf="isBrowser">
+                    <quill-editor [modules]="quillConfig" placeholder="Product Description" formControlName="description" [styles]="{height: 'auto', border: '1px solid #ccc' }"  ></quill-editor>
+                </ng-container>
+                <div *ngIf="submitted && f.description.errors" class="invalid-feedback" style="display: block;">
+                    <div *ngIf="f.description.errors.required">Product description is required</div>                     
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Facebook URL</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text font9rem">facebook.com/</span>
+                    <input type="text" class="form-control padding12" formControlName="facebookUrl" placeholder="Facebook URL"
+                    style="border-top-left-radius: 0; border-bottom-left-radius: 0; width: 0%;"/>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Twitter URL</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text font9rem">twitter.com/</span>
+                    <input type="text" class="form-control padding12" formControlName="twitterUrl" placeholder="Twitter URL"
+                    style="border-top-left-radius: 0; border-bottom-left-radius: 0; width: 0%;"/>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>LinkedIn URL</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text font9rem">linkedin.com/in/</span>
+                    <input type="text" class="form-control padding12" formControlName="linkedinUrl" placeholder="LinkedIn URL"
+                    style="border-top-left-radius: 0; border-bottom-left-radius: 0; width: 0%;"/>
+                </div>
+            </div>        
+            <div class="form-footer d-flex">
+                <button type="submit" id="submitBtn" *ngIf="isIntervalLaunched">Submit</button>
+            </div>
+        </form>
+    </div>
+</section>

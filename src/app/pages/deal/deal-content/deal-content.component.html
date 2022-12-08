@@ -1,0 +1,373 @@
+<loading *ngIf="isSpinnerLoading"></loading>
+
+<section>
+    <div class="container">
+        <h3 class="text-center my-4 fw-bold">Vendor Content Form</h3>
+        <div class="w-75 m-auto">
+            <form id="signUpForm" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Email address</label>
+                        <input type="email" class="content-form" placeholder="" formControlName="emailAddress"
+                        [ngClass]="[submitted && f.emailAddress.errors ? 'is-invalid' : '',  submitted && !f.emailAddress.errors ? 'is-valid' : '']" 
+                        />
+                        <div *ngIf="submitted && f.emailAddress.errors" class="invalid-feedback">
+                            <div *ngIf="f.emailAddress.errors.required">Email address is required.</div>
+                            <div *ngIf="f.emailAddress.errors.email">Invalid email address.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Your Product Name</label>
+                        <input type="text" class="content-form" placeholder="" formControlName="productName"
+                        [ngClass]="[submitted && f.productName.errors ? 'is-invalid' : '',  submitted && !f.productName.errors ? 'is-valid' : '']" 
+                        />
+                        <div *ngIf="submitted && f.productName.errors" class="invalid-feedback">
+                            <div *ngIf="f.productName.errors.required">Product name is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Phonetic pronunciation</label>
+                        <input type="text" class="content-form" placeholder="" formControlName="pronunciation"
+                        [ngClass]="[submitted && f.pronunciation.errors ? 'is-invalid' : '',  submitted && !f.pronunciation.errors ? 'is-valid' : '']" 
+                        />
+                        <div *ngIf="submitted && f.pronunciation.errors" class="invalid-feedback">
+                            <div *ngIf="f.pronunciation.errors.required">Phonetic pronunciation is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Product URL</label>
+                        <input type="text" class="content-form" placeholder="" formControlName="productUrl"
+                        [ngClass]="[submitted && f.productUrl.errors ? 'is-invalid' : '',  submitted && !f.productUrl.errors ? 'is-valid' : '']" 
+                        />
+                        <div *ngIf="submitted && f.productUrl.errors" class="invalid-feedback">
+                            <div *ngIf="f.productUrl.errors.required">Product URL is required.</div>
+                            <div *ngIf="f.productUrl.errors.pattern">Please enter valid product url</div>   
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">URL to your website's Pricing Page</label>
+                        <input type="text" class="content-form" placeholder="" formControlName="pricingUrl"
+                        [ngClass]="[submitted && f.pricingUrl.errors ? 'is-invalid' : '',  submitted && !f.pricingUrl.errors ? 'is-valid' : '']" 
+                        />
+                        <div *ngIf="submitted && f.pricingUrl.errors" class="invalid-feedback">
+                            <div *ngIf="f.pricingUrl.errors.required">Pricing page URL is required.</div>
+                            <div *ngIf="f.pricingUrl.errors.pattern">Please enter valid pricing url</div>   
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">The plan you are selling is listed in your proposal. Are ALL of your plan features live and ready for testing?</label>
+                        <input type="text" class="content-form" placeholder="" formControlName="palnReady"
+                        [ngClass]="[submitted && f.palnReady.errors ? 'is-invalid' : '',  submitted && !f.palnReady.errors ? 'is-valid' : '']" 
+                        />
+                        <div *ngIf="submitted && f.palnReady.errors" class="invalid-feedback">
+                            <div *ngIf="f.palnReady.errors.required">This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Is your product GDPR compliant?</label>
+                        <div class="radio-tile-group">
+                            <div class="input-container mb-2">
+                              <input id="drive" class="radio-button" type="radio" value="true" name="isProductGDPR" formControlName="isProductGDPR"/>
+                              <div class="radio-tile">
+                                <label for="drive" class="radio-tile-label">Yes</label>
+                              </div>
+                            </div>                        
+                            <div class="input-container">
+                              <input id="fly" class="radio-button" type="radio" value="false" name="isProductGDPR" formControlName="isProductGDPR"/>
+                              <div class="radio-tile">
+                                <label for="fly" class="radio-tile-label">No</label>
+                              </div>
+                            </div>
+                            <div *ngIf="submitted && f.isProductGDPR.errors" class="invalid-feedback2">
+                                <div *ngIf="f.isProductGDPR.errors.required">This field is required.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Is your product offered in multiple languages?</label>
+                        <textarea type="text" rows="5" class="content-form" placeholder="" formControlName="productMultiLang"
+                        [ngClass]="[submitted && f.productMultiLang.errors ? 'is-invalid' : '',  submitted && !f.productMultiLang.errors ? 'is-valid' : '']" 
+                        ></textarea>
+                        <div *ngIf="submitted && f.productMultiLang.errors" class="invalid-feedback">
+                            <div *ngIf="f.productMultiLang.errors.required">This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Product Description</label>
+                        <textarea type="text" rows="2" class="content-form" placeholder="" formControlName="shortDesc"
+                        [ngClass]="[submitted && f.shortDesc.errors ? 'is-invalid' : '',  submitted && !f.shortDesc.errors ? 'is-valid' : '']" 
+                        ></textarea>
+                        <div *ngIf="submitted && f.shortDesc.errors" class="invalid-feedback">
+                            <div *ngIf="f.shortDesc.errors.required">This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Header</label>
+                        <textarea type="text" rows="2" class="content-form" placeholder="" formControlName="header"
+                        [ngClass]="[submitted && f.header.errors ? 'is-invalid' : '',  submitted && !f.header.errors ? 'is-valid' : '']" 
+                        ></textarea>
+                        <div *ngIf="submitted && f.header.errors" class="invalid-feedback">
+                            <div *ngIf="f.header.errors.required">This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Subheader</label>
+                        <textarea type="text" rows="2" class="content-form" placeholder="" formControlName="subHeader"
+                        [ngClass]="[submitted && f.subHeader.errors ? 'is-invalid' : '',  submitted && !f.subHeader.errors ? 'is-valid' : '']" 
+                        ></textarea>
+                        <div *ngIf="submitted && f.subHeader.errors" class="invalid-feedback">
+                            <div *ngIf="f.subHeader.errors.required">This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Describe your product for search engine results pages to improve SEO traffic to your listing</label>
+                        <input type="text" class="content-form" placeholder="[Your tool name] - [Description] | BufferApps" formControlName="productSEOText"
+                        [ngClass]="[submitted && f.productSEOText.errors ? 'is-invalid' : '',  submitted && !f.productSEOText.errors ? 'is-valid' : '']" 
+                        />
+                        <div *ngIf="submitted && f.productSEOText.errors" class="invalid-feedback">
+                            <div *ngIf="f.productSEOText.errors.required">This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Header Image → File Upload</label>
+                        <div class="gallery-uploader-wrap">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="uploader-img">
+                                      <input type="file" id="file-upload1" formControlName="headerImagePaths" (change)="onFileChangeHeader($event)" #headerImageFile > 
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="#999" width="32" height="32" viewBox="0 0 24 24"> <circle cx="12" cy="12" r="3"/> <path d="M16.83 4L15 2H9L7.17 4H2v16h20V4h-5.17zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                                      </svg> 
+                                    </label>
+                                </div>
+                                <div *ngFor='let image of headerImages; let i = index;' class="col-md-3">
+                                  <label class="uploader-img">                                      
+                                      <i class="bi bi-x-circle" (click)="removeImageHeader(i)" style="display: flow-root; padding: 10px;">
+                                        <img width="100" [src]="image.url">
+                                      </i>
+                                  </label>
+                                </div>                
+                            </div>              
+                        </div> 
+                        <div *ngIf="submitted && f.headerImagePaths.errors" class="invalid-feedback2">
+                            <div *ngIf="f.headerImagePaths.errors.required">This field is required.</div>
+                        </div>
+                        <div *ngIf="submitted && !f.headerImagePaths.errors && f.headerImages?.value?.length == 0" class="invalid-feedback2">
+                            <div>This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Horizontal Product Logo</label>
+                        <div class="gallery-uploader-wrap">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="uploader-img">
+                                      <input type="file" id="file-upload2" formControlName="horizontalImagePaths" (change)="onFileChangeHorizontal($event)" #horizontalImageFile > 
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="#999" width="32" height="32" viewBox="0 0 24 24"> <circle cx="12" cy="12" r="3"/> <path d="M16.83 4L15 2H9L7.17 4H2v16h20V4h-5.17zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                                      </svg> 
+                                    </label>
+                                </div>
+                                <div *ngFor='let image of horizontalImages; let i = index;' class="col-md-3">
+                                  <label class="uploader-img">                                      
+                                      <i class="bi bi-x-circle" (click)="removeImageHorizontal(i)" style="display: flow-root; padding: 10px;">
+                                        <img width="100" [src]="image.url">
+                                      </i>
+                                  </label>
+                                </div>                
+                            </div>              
+                        </div> 
+                        <div *ngIf="submitted && f.horizontalImagePaths.errors" class="invalid-feedback2">
+                            <div *ngIf="f.horizontalImagePaths.errors.required">This field is required.</div>
+                        </div>
+                        <div *ngIf="submitted && !f.horizontalImagePaths.errors && f.horizontalImages?.value?.length == 0" class="invalid-feedback2">
+                            <div>This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Will this logo match the product offer?</label>
+                        <div class="radio-tile-group">
+                            <div class="input-container mb-2">
+                              <input id="drive" class="radio-button" type="radio" value="true" name="isLogoMatch" formControlName="isLogoMatch" />
+                              <div class="radio-tile">
+                                <label for="drive" class="radio-tile-label">Yes</label>
+                              </div>
+                            </div>                        
+                            <div class="input-container">
+                              <input id="fly" class="radio-button" type="radio" value="false" name="isLogoMatch" formControlName="isLogoMatch" />
+                              <div class="radio-tile">
+                                <label for="fly" class="radio-tile-label">No</label>
+                              </div>
+                            </div>
+                            <div *ngIf="submitted && f.isLogoMatch.errors" class="invalid-feedback2">
+                                <div *ngIf="f.isLogoMatch.errors.required">This field is required.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Do you confirm your logo will not change once submitted?</label>
+                        <div class="radio-tile-group">
+                            <div class="input-container mb-2">
+                              <input id="drive" class="radio-button" type="radio" value="true" name="isLogoConfirm" formControlName="isLogoConfirm" />
+                              <div class="radio-tile">
+                                <label for="drive" class="radio-tile-label">Yes</label>
+                              </div>
+                            </div>                        
+                            <div class="input-container">
+                              <input id="fly" class="radio-button" type="radio" value="false" name="isLogoConfirm" formControlName="isLogoConfirm" />
+                              <div class="radio-tile">
+                                <label for="fly" class="radio-tile-label">No</label>
+                              </div>
+                            </div>
+                            <div *ngIf="submitted && f.isLogoConfirm.errors" class="invalid-feedback2">
+                                <div *ngIf="f.isLogoConfirm.errors.required">This field is required.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Introduction</label>
+                        <textarea type="text" rows="5" class="content-form" formControlName="introduction"
+                        [ngClass]="[submitted && f.introduction.errors ? 'is-invalid' : '',  submitted && !f.introduction.errors ? 'is-valid' : '']" 
+                        ></textarea>
+                        <div *ngIf="submitted && f.introduction.errors" class="invalid-feedback">
+                            <div *ngIf="f.introduction.errors.required">This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Taxonomy & Attributes → Alternative to:</label>   
+                        <input type="text" class="content-form" formControlName="taxonomy"
+                        [ngClass]="[submitted && f.taxonomy.errors ? 'is-invalid' : '',  submitted && !f.taxonomy.errors ? 'is-valid' : '']" 
+                        />
+                        <div *ngIf="submitted && f.taxonomy.errors" class="invalid-feedback">
+                            <div *ngIf="f.taxonomy.errors.required">This field is required.</div>
+                        </div>         
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Does your software integrate with other solutions? </label>   
+                        <input type="text" class="content-form" formControlName="solutions"
+                        [ngClass]="[submitted && f.solutions.errors ? 'is-invalid' : '',  submitted && !f.solutions.errors ? 'is-valid' : '']" 
+                        />
+                        <div *ngIf="submitted && f.solutions.errors" class="invalid-feedback">
+                            <div *ngIf="f.solutions.errors.required">This field is required.</div>
+                        </div>          
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Product Descriprion</label>
+                        <ng-container *ngIf="isBrowser">
+                            <quill-editor [modules]="quillConfig" placeholder="" formControlName="description" [styles]="{height: 'auto', border: '1px solid #ccc' }"></quill-editor>
+                        </ng-container>
+                        <div *ngIf="submitted && f.description.errors" class="invalid-feedback" style="display: block;">
+                            <div *ngIf="f.description.errors.required">Product description is required</div>                     
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Use Cases</label>
+                        <textarea type="text" rows="5" class="content-form" formControlName="useCases"
+                        [ngClass]="[submitted && f.useCases.errors ? 'is-invalid' : '',  submitted && !f.useCases.errors ? 'is-valid' : '']" 
+                        ></textarea>
+                        <div *ngIf="submitted && f.useCases.errors" class="invalid-feedback">
+                            <div *ngIf="f.useCases.errors.required">This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Market Fit - specific features/tools make you different from the competition</label>
+                        <textarea type="text" rows="3" class="content-form" formControlName="features"
+                        [ngClass]="[submitted && f.features.errors ? 'is-invalid' : '',  submitted && !f.features.errors ? 'is-valid' : '']" 
+                        ></textarea>
+                        <div *ngIf="submitted && f.features.errors" class="invalid-feedback">
+                            <div *ngIf="f.features.errors.required">This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Who is your target customer?</label>
+                        <input type="text" class="content-form" formControlName="targetCustomer"
+                        [ngClass]="[submitted && f.targetCustomer.errors ? 'is-invalid' : '',  submitted && !f.targetCustomer.errors ? 'is-valid' : '']" 
+                        />
+                        <div *ngIf="submitted && f.targetCustomer.errors" class="invalid-feedback">
+                            <div *ngIf="f.targetCustomer.errors.required">This field is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <div>
+                        <label class="form-label mb-3">Product Images - Upto 4 Images</label>
+                        <div class="gallery-uploader-wrap">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="uploader-img">
+                                      <input type="file"  id="file-upload" formControlName="imagePaths" multiple  (change)="onFileChange($event)" #imageFile > 
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="#999" width="32" height="32" viewBox="0 0 24 24"> <circle cx="12" cy="12" r="3"/> <path d="M16.83 4L15 2H9L7.17 4H2v16h20V4h-5.17zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                                      </svg> 
+                                    </label>
+                                </div>
+                                <div *ngFor='let image of images; let i = index;' class="col-md-3">
+                                  <label class="uploader-img">                                      
+                                      <i class="bi bi-x-circle" (click)="removeImage(i)" style="display: flow-root; padding: 10px;">
+                                        <img width="100" [src]="image.url">
+                                      </i>
+                                  </label>
+                                </div>                
+                            </div>              
+                        </div> 
+                        <div *ngIf="submitted && f.imagePaths.errors" class="invalid-feedback2">
+                            <div *ngIf="f.imagePaths.errors.required">This field is required.</div>
+                        </div>
+                        <div *ngIf="submitted && !f.imagePaths.errors " class="invalid-feedback2">
+                            <div *ngIf="f.images?.value?.length == 0">This field is required.</div>
+                            <div *ngIf="f.images?.value?.length > 4">Maximum 4 images allowed.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-3 px-4 mb-2 bg-fa">
+                    <button class="btn btn-primary w-100" type="submit" [disabled]="isLoading" >
+                        {{ isLoading ? 'Saving Vendor Content ' : 'Submit' }}</button>
+                </div>                
+            </form>
+        </div>
+    </div>
+</section>

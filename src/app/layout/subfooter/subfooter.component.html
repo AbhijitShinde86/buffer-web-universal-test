@@ -1,0 +1,19 @@
+<section class="newsletter text-center py-4">
+    <div class="container">
+      <div class="emailoptin">
+        <h4 class="fw-bold pb-4">Get Latest Updates On New Products/Startups</h4>
+        <form id="subscribeForm" [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+          <div class="d-lg-flex justify-content-center">
+            <input type="email" class="form-control mw-100 w-35 p-3" formControlName="email" placeholder="Your email id"
+            [ngClass]="[submitted && f.email.errors ? 'is-invalid' : '',  submitted && !f.email.errors ? 'is-valid' : '']" 
+            />
+            <!-- <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">Email is required</div>
+                <div *ngIf="f.email.errors.pattern">Enter valid Email</div>
+            </div> -->
+            <button class="btn btn-dark p-2 mt-2 mt-lg-0 ms-lg-2 px-4 mw-100">Subscribe</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</section>

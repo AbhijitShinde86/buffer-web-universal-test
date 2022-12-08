@@ -1,0 +1,27 @@
+<section class="py-4" *ngIf="categoryData">
+  <div class="container">
+      <div (click)="onCategoriesClick()">
+        <p class="mb-4 cursorpointer">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+          </svg>
+          </span>
+          Category
+        </p>
+      </div>
+      <h4 class="fw-bold h2color mb-0 pb-4">{{categoryData.marketName}}</h4>
+      <div style="min-height: 400px;">
+        <div class="row">
+          <div class="col-md-3" *ngFor="let startup of startupList">
+            <app-startup-item [startup]="startup" (setLike)="setLike($event,'nondef')"></app-startup-item>
+          </div>
+          <!-- <p *ngIf=" this.dataFound && startupList.length <= 0 " class="text-center py-3">No Startup's available for this category.</p> -->
+        </div>
+      </div>
+  </div>
+</section>
+
+<div class="py-4 text-center" *ngIf="totalPages > curPage">
+    <button class="btn btn-neutral fontsm" (click)="loadMoreClick()">Load More</button>
+</div>

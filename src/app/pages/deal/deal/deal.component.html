@@ -1,0 +1,350 @@
+<div  style="min-height: 500px;">
+  <div *ngIf="deal">
+    <section class="py-5" style="background: #eff1ff;">
+      <div class="container">
+        <div class="row gx-5 align-items-center">
+          <div class="col-md-7">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div *ngIf="deal?.imagePaths?.length == 0">    
+                  <div class="carousel-item active">             
+                      <img src="assets/gradientbg.png" class="d-block w-100 rounded">
+                  </div>   
+                </div>
+                <div *ngIf="deal?.imagePaths?.length > 0">    
+                    <div class="carousel-item" 
+                      [ngClass]="[i == 0 ? 'active' : '']" 
+                      *ngFor="let image of deal?.imagePaths; let i = index;">
+                        <!-- <img src="..." class="d-block w-100" alt="..."> -->
+                        <img src="{{image.url_preview}}" class="d-block w-100 rounded">
+                    </div>
+                </div>               
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div> 
+          </div>
+          <div class="col-md-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb font8rem">
+                  <li class="breadcrumb-item"><a routerLink="/" class="text-black text-decoration-none">Home</a></li>
+                  <li class="breadcrumb-item"><a routerLink="/lifetime-deals" class="text-black text-decoration-none">lifetime-deals</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{deal?.dealName}}</li>
+                </ol>
+            </nav>
+            <div class="mb-0">
+              <h2 class="fw-bold d-flex align-items-center">{{deal?.dealName}} 
+                <span *ngIf="deal?.plans?.length > 0" class="badge font7rem ms-3 btn btn-primary">
+                  {{getDealTypeName(deal?.dealType)}}
+                </span>
+              </h2>
+              <p>{{deal?.shortDesc}}</p>
+              <h3 class="my-4 d-md-flex align-items-center" *ngIf="deal?.plans?.length > 0"> 
+                <span class="font8rem me-2">Starts from</span>{{deal?.plans[0].currencySign}}{{deal?.plans[0].discPrice}}
+              </h3>
+              <div class="w-75" *ngIf="deal?.plans?.length > 0">
+                <div class="mb-2">
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <h6>Plans</h6>
+                        <p class="font8rem text-decoration-underline cursorpointer colorblue">View Plan Details</p>
+                    </div>
+                    <select class="form-select" [(ngModel)]="curPlan">
+                      <option *ngFor="let plan of deal?.plans" [ngValue]="plan" selected>{{plan.currencySign}}{{plan.discPrice}}</option>
+                    </select>
+                </div>
+                <div class="mb-0" *ngIf="user?.id != deal?.userId?._id && !dealExpired">
+                    <div class="mt-2">
+                      <button class="btn btn-warning w-100" (click)="onBuyNow()">Buy Now</button>
+                    </div>
+                </div>
+                <div class="mb-0" *ngIf="dealExpired">
+                    <div class="mt-2">
+                        <button class="btn btn-outline-dark fontsm w-100">Deal expired</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+
+
+
+<section class="py-5">
+    <div class="container">
+      <div class="row">
+          <div class="col-md-8">
+              <!-- <div class="mb-3">
+                <h2 class="fw-bold d-flex align-items-center">{{deal?.dealName}} 
+                  <span *ngIf="deal?.plans?.length > 0" class="badge font7rem ms-3 btn btn-primary">
+                    {{getDealTypeName(deal?.dealType)}}
+                  </span>
+                </h2>
+                <p>{{deal?.shortDesc}}</p>
+              </div> -->
+              <!-- <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <div *ngIf="deal?.imagePaths?.length == 0">    
+                    <div class="carousel-item active">             
+                        <img src="assets/gradientbg.png" class="d-block w-100 rounded">
+                    </div>   
+                  </div>
+                  <div *ngIf="deal?.imagePaths?.length > 0">    
+                      <div class="carousel-item" 
+                        [ngClass]="[i == 0 ? 'active' : '']" 
+                        *ngFor="let image of deal?.imagePaths; let i = index;">
+                          <img src="{{image.url_preview}}" class="d-block w-100 rounded">
+                      </div>
+                  </div>               
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>               -->
+              <div class="p-4 dealdesc">
+                <p class="mb-3" [innerHtml]=deal?.description></p>
+              </div>
+              <div class="mt-5">
+                  <h4 class="fw-bold">Plans & Features</h4>
+                  <div class="mt-4 dealterms">
+                      <h6 class="fw-bold mb-3">Terms And Conditions</h6>
+                      <ul>
+                        <li *ngFor="let term of deal?.terms">{{term}}</li>
+                      </ul>
+                  </div>
+
+                  <div class="mt-5 planfeatures">
+                      <h6 class="fw-bold mb-3">{{deal?.dealName}} Features</h6>
+                      <ul>
+                        <li *ngFor="let feature of deal?.features">{{feature}}</li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="mt-5">
+                  <div class="row">
+                      <div class="col-md-4" *ngFor="let plan of deal?.plans">
+                          <div class="border-cadetblue rounded-3">
+                              <div class="py-3 text-center">
+                                  <h6 class="mb-0">{{plan.planName}}</h6>
+                              </div>
+                              <div class="p-2 text-center bg-cadetblue">
+                                  <h4 *ngIf="plan.price == plan.discPrice" class="mb-0">{{plan.currencySign}}{{plan.price}}</h4>
+                                  <h4 *ngIf="plan.price != plan.discPrice" class="mb-0">{{plan.currencySign}}{{plan.discPrice}}<span class="font8rem text-decoration-line-through">{{plan.currencySign}}{{plan.price}}</span></h4>
+                              </div>
+                              <div class="pt-4 px-2 planlist">
+                                  <ul>
+                                    <li class="fontsm" *ngFor="let feature of plan.features">
+                                      <span>
+                                        <i *ngIf="feature.available" class="bi bi-check-lg mx-2"></i>
+                                        <i *ngIf="!feature.available" class="bi bi-x-lg mx-2" style="color: red;"></i>
+                                      </span>
+                                      {{feature.featureText}}
+                                    </li>
+                                  </ul>
+                              </div>
+                              <!-- <button class="btn btn-warning w-100">Buy Now (1 Code)</button> -->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="mt-5">
+                  <div class="p-4 mt-4 foundersnotebg">
+                      <h4>Founder's Note</h4>
+                      <hr class="w-25 founderdivider">
+                      <p [innerHtml]=deal?.founderNote></p>
+
+                      <div class="userprof mb-2 d-flex align-items-center cursorpointer mt-4">
+                        <div *ngIf="!deal?.userId?.photoUrl?.url_preview"><img src="assets/images/blankUser.webp" alt="{{deal?.userId?.name}}" ></div>
+                        <div *ngIf="deal?.userId?.photoUrl?.url_preview">
+                            <img src="{{deal?.userId?.photoUrl?.url_preview}}" (error) ="$event.target.src = 'assets/images/blankUser.webp'" alt="{{deal?.userId?.name}}">
+                        </div>
+                        <p class="ms-2 mb-0 font8rem">{{deal?.userId?.name}} | <span>Founder</span></p>
+                      </div>
+                    </div>
+
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="mb-2 stickysidebar p-4">
+                  <div class="mb-4" *ngIf="deal?.isPremium">
+                      <div><img src="assets/images/BufferApps-Premium.png" style="width: 200px;"></div>
+                  </div>
+                  <div class="mb-4">
+                      <h4 class="d-flex align-items-center">{{deal?.dealName}} 
+                        
+                      </h4>
+                      <p class="pt-2">{{deal?.shortDesc}}</p>
+                  </div>
+                  <div class="mb-4">
+                      <div class="ratingoverview">
+                        <!-- <app-rating [rating]="deal?.dealRating"></app-rating> -->
+                        <!-- <span class="ms-3 cursorpointer colorblue">Reviews</span> -->
+                        <!-- <span>{{deal?.reviewCount}}</span> -->
+                        <span *ngIf="deal?.plans?.length > 0" class="badge font7rem btn btn-primary">{{getDealTypeName(deal?.dealType)}}</span>
+                      </div>
+                  </div>
+                  <div  *ngIf="deal?.plans?.length > 0">
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h6>Plans</h6>
+                            <!-- <p class="font8rem text-decoration-underline cursorpointer colorblue">View Plan Details</p> -->
+                        </div>
+                        <select class="form-select" [(ngModel)]="curPlan">
+                          <option *ngFor="let plan of deal?.plans" [ngValue]="plan" selected>{{plan.currencySign}}{{plan.discPrice}}</option>
+                        </select>
+                    </div>
+                    <div class="mb-4" *ngIf="user?.id != deal?.userId?._id && !dealExpired">
+                        <div class="mt-2">
+                          <button class="btn btn-warning w-100" (click)="onBuyNow()">Buy Now</button>
+                        </div>
+                    </div>
+                    <div class="mb-4" *ngIf="dealExpired">
+                      <div class="mt-2">
+                          <button class="btn btn-outline-dark fontsm w-100">Deal expired</button>
+                      </div>
+                  </div>
+                    <div class="money-back mb-4">
+                      <p class="fontsm"><span class="fw-bold">60 day money-back guarantee.</span> Try it out for 2 months to make sure it's right for you!</p>
+                    </div>
+                  </div>
+                  <div *ngIf="user?.id != deal?.userId?._id">
+                      <p class="fontsm reportcolor text-center" (click)="onShowReportModel()"><i class="bi bi-flag"></i> Report this deal</p>
+                  </div>
+                  
+              </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="questionsec py-5">
+    <div style="width: 800px; margin: auto;">
+      <h4 class="fw-bold mb-4">Reviews And Questions</h4>
+
+      <div class="d-flex align-items-center mb-3">
+          <h6 class="pb-2 cursorpointer" [ngClass]="cutTab =='question' ? 'activecomm' :''" (click)="cutTab ='question'">Questions</h6>
+          <h6 class="pb-2 ms-4 cursorpointer" [ngClass]="cutTab =='review' ? 'activecomm' :''" (click)="cutTab ='review'">Reviews</h6>
+      </div>
+
+      <div *ngIf="cutTab =='question'">
+        <div class="mb-3 pb-3 border-bottom" *ngIf="user">
+          <div class="d-flex">
+              <div class="userprof">
+                  <div *ngIf="!user?.photoUrl"><img src="assets/images/blankUser.webp" alt="{{user.name}}" ></div>
+                  <div *ngIf="user?.photoUrl">
+                      <img src="{{user?.photoUrl}}" (error) ="$event.target.src = 'assets/images/blankUser.webp'" alt="{{user.name}}">
+                  </div>
+              </div>
+              <div class="userdialogbox w-100 ms-3">
+                  <h6 class="fw-bold">{{user.firstName}}</h6>
+                  <!-- <textarea class="form-control my-3" rows="3" [(ngModel)]="question"></textarea> -->
+                  <ng-container *ngIf="isBrowser">
+                    <quill-editor [modules]="quillConfig" [(ngModel)]="question" [styles]="{height: 'auto', border: 'none' }"  ></quill-editor>
+                  </ng-container>                  
+                  <div class="text-end mt-2"><button class="btn btn-primary btn-sm" (click)="postQuestion()">Post Question</button></div>
+              </div>
+          </div>
+        </div>  
+        <questions [questions]="questions" currentDealId="{{deal?._id}}" [currentUser]="user" [isVendor]="isVendor" [dealUserId]="deal?.userId?._id"></questions>    
+      </div>
+
+      <div *ngIf="cutTab =='review'">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h4></h4>
+            <button class="btn btn-success btn-sm" *ngIf="user && user?.id != deal?.userId?._id" (click)="onShowReviewModel()">Submit Review</button>
+        </div>
+        <reviews [reviews]="reviews" currentDealId="{{deal?._id}}" [currentUser]="user"
+          [isVendor]="isVendor" [dealUserId]="deal?.userId?._id">
+        </reviews>
+      </div>
+    </div>
+  </section>
+
+  
+<!-- Modal For Report Product -->
+<div [ngStyle]="{'display':reportModalDisplay}" class="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <button type="button" class="btn-close closepopup" (click)="reportModalDisplay = 'none'"></button>
+      </div>
+      <div class="text-center">
+          <h5 class="modal-title">Report {{deal?.productName}}</h5>
+      </div>
+      <div class="modal-body p-3 text-center">
+        <p class="fontsm mb-3">Help us understand what's wrong with this listing. <br>Please be precise.</p>
+        <textarea rows="4" class="form-control fontsm" [(ngModel)]="reportText"></textarea>
+        <button class="btn btn-success fontsm w-25 mt-3" (click)="onSubmitReport()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal For Submit Review -->
+<div [ngStyle]="{'display':reviewModalDisplay}" class="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <button type="button" class="btn-close closepopup" (click)="reviewModalDisplay = 'none'"></button>
+      </div>
+      <div class="text-center">
+          <h5 class="modal-title">Submit Review</h5>
+      </div>
+      <div class="modal-body p-3 text-center">
+        <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReview()">
+          <div class="mb-3">
+              <div class="ratingsubmit">
+                <i (click)="onRatingClick(1)" [ngClass]="reviewRating > 0 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                <i (click)="onRatingClick(2)" [ngClass]="reviewRating > 1 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                <i (click)="onRatingClick(3)" [ngClass]="reviewRating > 2 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                <i (click)="onRatingClick(4)" [ngClass]="reviewRating > 3 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+                <i (click)="onRatingClick(5)" [ngClass]="reviewRating > 4 ? 'bi bi-star-fill' : 'bi bi-star' "></i>
+              </div>
+              <div *ngIf="submitted && f.reviewRating.errors" class="invalid-feedback">
+                <div *ngIf="f.reviewRating.errors.required">Rating is required</div>
+              </div>
+          </div>
+
+          <div class="mb-2 text-start">
+              <label class="mb-1 fontsm fw-bold">Title</label>
+              <input type="text" class="form-control" formControlName="reviewTitle" 
+                [ngClass]="[submitted && f.reviewTitle.errors ? 'is-invalid' : '',  submitted && !f.reviewTitle.errors ? 'is-valid' : '']" 
+              >
+              <div *ngIf="submitted && f.reviewTitle.errors" class="invalid-feedback">
+                <div *ngIf="f.reviewTitle.errors.required">Title is required</div>
+              </div>
+          </div>
+          <div class="mb-2 text-start">
+              <label class="mb-1 fontsm fw-bold">Review</label>
+              <textarea rows="4" formControlName="reviewText" class="form-control fontsm"
+                [ngClass]="[submitted && f.reviewText.errors ? 'is-invalid' : '',  submitted && !f.reviewText.errors ? 'is-valid' : '']" 
+              >
+              </textarea>
+              <div *ngIf="submitted && f.reviewText.errors" class="invalid-feedback">
+                <div *ngIf="f.reviewText.errors.required">Review is required</div>
+              </div>
+          </div>
+
+          <p class="font8rem">By submmitting review, You agree to bufferapps terms and privacy policy</p>
+          
+          <button class="btn btn-success fontsm w-50 mt-3" type="submit" >Submit Review</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

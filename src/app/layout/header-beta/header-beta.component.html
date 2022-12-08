@@ -1,0 +1,24 @@
+<div class="d-lg-flex">
+    <!-- <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+        </a>
+        <ul class="dropdown-menu navcategory" aria-labelledby="navbarDropdown">
+            <li *ngFor="let market of categories"><a class="dropdown-item" (click)="onSelectedCategoriesClick(market.marketLink)" >{{market.marketName}}</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" (click)="onCategoriesClick()">More</a></li>
+        </ul>
+    </li> -->
+    <li class="nav-item">
+        <a class="nav-link btn" routerLink="/join-beta" aria-current="page">Join Beta</a>
+    </li>
+    <li class="nav-item" *ngIf="userData?.scnt > 0">
+        <a class="nav-link btn btn-neutral" aria-current="page" (click)="onVendorClick()">Vendor</a>
+    </li>
+    <li class="nav-item" *ngIf="!userData">
+        <a class="nav-link btn btn-neutral" aria-current="page" (click)="onSubmitProductClick()" >+ Submit Product</a>
+    </li>
+    <li class="nav-item" *ngIf="userData && userData?.scnt == 0">
+        <a class="nav-link btn btn-neutral" aria-current="page" (click)="onSubmitProductClick()" >+ Submit Product</a>
+    </li>
+</div>

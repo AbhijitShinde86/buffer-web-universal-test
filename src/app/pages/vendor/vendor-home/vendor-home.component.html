@@ -1,0 +1,44 @@
+
+<section class="py-4" style="background-color: #EEF1FF;">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+          <h5 class="h2color mb-0">Your Products</h5>
+          <button type="button" class="btn btn-submitvendor px-4" (click)="onSubmitProduct()">+ Submit Product</button>
+          <button type="button" class="btn btn-submitvendor px-4" (click)="onSubmitDeal()">+ Submit Deal</button>
+      </div>
+        
+    </div>
+</section>
+<section class="deal-list" style="min-height: 500px;">
+    <div class="container">
+        <table class="table dlisttable">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Product Type</th>
+                <th>Submission Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of productsData">
+                <td>
+                  <div *ngIf="product.imagePaths?.length == 0"><img src="assets/gradientbg.png" alt="{{product.name}}" class="deal-list-img"></div>
+                  <div *ngIf="product.imagePaths?.length > 0">
+                      <img src="{{product.imagePaths[0].url_preview}}" (error) ="$event.target.src = 'assets/gradientbg.png'" alt="{{product.name}}" class="deal-list-img">
+                  </div>
+                </td>
+                <td class="fw-bold">{{product.name}}</td>
+                <td><span class="badge font7rem"
+                  [ngClass]="product.type.toLowerCase() == 'beta' ? 'bg-success' : 'bg-primary' "
+                  >{{product.type}}</span></td>
+                <td class="font8rem">{{getStatusName(product.status)}}</td>
+                <td>
+                  <span class="viewcolor" (click)="onViewClick(product.type, product.link)">View</span>
+                  <span class="deletecolor ms-2" (click)="onDeleteClick(product.type, product._id)">Delete</span>
+                </td>
+              </tr>
+        </table>
+    </div>
+</section>

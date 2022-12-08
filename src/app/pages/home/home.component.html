@@ -1,0 +1,137 @@
+<div class="bgcolorf9">
+    <section class="top-home position-relative">
+        <div class="container">
+            <!-- <h4 class="saasword position-absolute">SaaS</h4>
+            <h5 class="betaword position-absolute">Beta Testing</h5>
+            <h4 class="mrktword position-absolute">Marketing</h4>
+            <h5 class="prword position-absolute">Products</h5> -->
+            <div class="text-center text-white">
+                <h1 class="fw-bold">Apps for Everyday Entrepreneurs!</h1>
+                <p>The place to discover your next favorite Apps 🚀</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="pb-5 recent-prd position-relative">
+        <div class="container">
+            <div class="row gx-lg-5">
+                <div class="col-md-8">
+                    <div *ngIf="recentList.length > 0">
+                        <h5 class="pb-3 fw-bold text-white">Recently Added Beta launch Products</h5>
+                        <div class="d-lg-flex mb-4" *ngFor="let startup of recentList;">
+                            <div class="homeprimg">
+                                <div *ngIf="startup.imagePaths?.length == 0">
+                                    <img src="assets/gradientbg.png" alt="{{startup.productName}}" class="border-left-radius">
+                                </div>
+                                <div *ngIf="startup.imagePaths?.length > 0">
+                                    <img src="{{startup.imagePaths[0].url_preview}}" (error) ="$event.target.src = 'assets/gradientbg.png'" alt="{{startup.productName}}" class="border-left-radius">
+                                </div>
+                            </div>
+                            <div class="border p-4 border-right-radius bg-white homeprdesc">
+                                <h5 class="mb-3">{{startup.productName}}</h5>
+                                <p class="lineclamp font9rem">{{startup.shortDesc}}</p>
+                                <div class="d-flex align-items-center justify-content-end mt-3">
+                                    <div class="d-flex align-items-center py-1 px-4 bg-hclap rounded text-white fontsm me-2" (click)="onLikeClick(startup)">
+                                        <span class="me-2">{{startup.likeCount < 0 ? 0 : startup.likeCount}}</span>
+                                        <img *ngIf="startup.userLikeCount == 0 " src="assets/clap.png" alt="like" width="24">
+                                        <img *ngIf="startup.userLikeCount > 0 " src="assets/clap-filled.png" alt="like-filled" width="24">
+                                        <span class="ms-2">Clap</span>
+                                    </div>
+                                    <a (click)="onStartupClick(startup?.startupLink)" class="btn btn-outline-dark px-lg-5 fontsm">See Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-5">
+                            <a class="btn btn-primary w-35 mw-100" href="https://bufferapps.com/beta-listing">View All</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <h5 class="pb-3 fw-bold text-white"><i class="bi bi-lightning-charge"></i> Trending Deal</h5>
+                    <div class="dealsticky">
+                        <div> <!-- *ngIf="trendingDeal" -->
+                            <a href="https://bufferapps.com/lifetime-deals/linktube"><img class="border-top-radius" src="https://media.publit.io/file/fil-X8H.png" alt="LinkTube Deal" width="100%"></a>
+                            <div class="p-3 border border-bottom-radius bg-white">
+                                <h4>LinkTube</h4>
+                                <!-- <p class="font8rem">One link to unlock limitless possibilities.</p> -->
+                                <p class="font8rem mt-2">LinkTube Is Awesomely Designed SINGLE URL Which Brings Visibility For Your Multiple Links Of Your Blogs, Podcasts, YouTube Videos, Products And Services Along With All Social Media Handles.</p>
+                                <span class="badge bg-primary my-2 font7rem">Lifetime Deal</span>
+                                <div class="d-flex align-items-center mt-2">
+                                    <h4 class="mb-0 fw-bold">$49</h4>
+                                    <p class="ms-2 text-decoration-line-through fontsm" style="color: #9f9c9c;">$499</p>
+                                </div>
+                                <a href="https://bufferapps.com/lifetime-deals/linktube" class="btn btn-warning w-100 mt-3">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="trending-home">
+
+    </section>
+    <section class="trending-products"> 
+        <div class="container-fluid px-lg-5">
+            <h4 class="fw-bold pb-4 text-white">Trending Beta Launch Products</h4>
+            <div class="row">
+                <div class="col-md-3" style="margin-bottom: 20px;" *ngFor="let startup of trendList" >
+                    <app-startup-item [startup]="startup" (setLike)="setLike($event,'default')"></app-startup-item>
+                </div>
+                <!-- <div class="col-md-3" style="margin-bottom: 20px;">
+                    <div class="mb-3">
+                        <div style="cursor:pointer;">
+                            <div><img src="assets/gradientbg.png" alt="" class="w-100 br-top-6"></div>
+                        </div>
+                        <div class="p-3 border border-top-0 br-bottom-6">
+                            <h5 class="lineclamp1 fw-bold">Product Name</h5>
+                            <p class="font9rem lineclamp">product short description</p>
+                            <div class="d-flex">
+                                <div class="px-1 mt-2 d-flex">
+                                    <span class="fontsm me-1 mt-1">0</span>
+                                    <img  src="assets/clap.png" alt="like" width="24">
+                                </div>
+                                <div class="px-1 mt-2 ms-2 d-flex align-items-center">
+                                    <span class="fontsm me-1 mt-1">0</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-chat-left mt-1" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </section>
+    <!-- <div style="min-height: 500px;">
+        <p>home works!</p>
+    </div> -->
+     
+    <section class="py-lg-5 py-4 ba-firstsection">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="mb-3 mb-lg-4">The Place to Discover your Next favourite Apps</h1>
+                    <p class="mb-3 mb-lg-4">Welcome to club, Start joining beta-launch and share your voice with globe.</p>
+                    <form id="subscribeForm" [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+                        <div class="d-lg-flex mb-4 mb-lg-0">
+                        <input type="email" class="form-control mobilew-100 w-50 p-2 p-lg-3" formControlName="email" placeholder="Your email id"
+                        [ngClass]="[submitted && f.email.errors ? 'is-invalid' : '',  submitted && !f.email.errors ? 'is-valid' : '']" 
+                        />
+                        <button class="btn btn-dark p-2 mt-2 mt-lg-0 ms-lg-2 px-4 mw-100">Join Now</button>
+                        </div>
+                    </form>
+                    <div class="text-center text-lg-start">
+                        <!-- <button (click)="onSubmitProductClick()"  class="btn btn-submit mb-4 mb-lg-0">Submit Your Product</button> -->
+                        <!-- <button class="btn btn-beta ms-3">Join As Beta Tester</button> -->
+                    </div>
+                </div>
+                <div class="col-md-6 text-center">
+                    <img src="assets/saas.png" class="mw-100" alt="featured image">
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

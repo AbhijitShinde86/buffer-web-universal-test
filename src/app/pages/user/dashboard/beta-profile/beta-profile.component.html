@@ -1,0 +1,62 @@
+<div class="col-md-8 m-auto">
+    <div class="ms-lg-5">
+    <h5 class="h2color mb-4">Beta Profile</h5>
+    <div *ngIf="requestData" >
+        <form class="forminpsize" [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label class="mb-1 font8rem">Name<span> *</span></label>
+                        <input type="text" class="form-control" formControlName="name" placeholder="Name" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="mb-1 font8rem">Email<span> *</span></label>
+                        <input type="text" class="form-control" formControlName="email" placeholder="Email"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="mb-1 font8rem">Website</label>
+                        <input type="text" class="form-control" formControlName="companyWebsite" placeholder="Website" >
+                    </div>
+                    <div class="mb-3">
+                        <label class="mb-1 font8rem">Introduce Yourself</label>
+                        <textarea class="form-control font9rem" rows="5" formControlName="introDetails" placeholder="Introduce Yourself" ></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="mb-1 font8rem">Company name you have worked with</label>
+                        <input type="text" class="form-control" formControlName="companyName" placeholder="Company name" >
+                    </div>
+                    <div class="mb-3">
+                        <label class="mb-1 font8rem">Designation</label>
+                        <input type="text" class="form-control" formControlName="companyDesignation" placeholder="Designation" >
+                    </div>
+                    <div class="mb-3">
+                        <label class="mb-1 font8rem">Write Down Experience</label>
+                        <textarea class="form-control font9rem" rows="5" formControlName="notes" placeholder="Write down experience you have with testing a tool and writing product feedback" ></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="mb-1 font8rem">Twitter URL</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text font9rem">twitter.com/</span>
+                            <input type="text" class="form-control padding12 font9rem" formControlName="twitterUsername" placeholder="Twitter Username">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="mb-1 font8rem">LinkedIn URL</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text font9rem">linkedin.com/in/</span>
+                            <input type="text" class="form-control padding12 font9rem" formControlName="linkedinUsername" placeholder="LinkedIn Username"/>
+                        </div>
+                    </div>
+                    <div class="mb-2 mt-4">
+                        <button type="submit" class="btn btn-primary w-100">Update beta profile</button>
+                    </div>
+                </div>
+            </div>
+        </form>  
+    </div>
+    <div *ngIf="!requestData" >
+        <a class="nav-link btn" routerLink="/join-beta" aria-current="page">Join Beta</a>
+    </div>
+    </div>
+  </div>
+  

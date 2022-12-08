@@ -1,0 +1,10 @@
+<div class="ms-lg-5">
+    <h5 class="h2color mb-4">Notifications</h5>
+    <ul class="notification" *ngIf="notificationsData?.length > 0">
+      <li  *ngFor="let notification of notificationsData">
+        <span class="faintblue">{{notification.notifyBy.username}} ({{notification.notifyBy.name}})</span> {{notification.description}}.
+        <span style="cursor: pointer; float: right; color: red; font-weight: bold;"
+          (click)="onCloseNotification(notification._id)">X</span>
+      </li>
+    </ul>
+</div>

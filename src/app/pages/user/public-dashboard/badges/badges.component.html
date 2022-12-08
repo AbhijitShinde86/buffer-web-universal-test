@@ -1,0 +1,13 @@
+<div class="ms-lg-5">
+    <h5 class="h2color mb-4">Badges</h5>
+    <div class="row" *ngIf="badgesData?.length > 0">
+      <div class="col-md-2" *ngFor="let badge of badgesData">
+        <img src="assets/{{badge.imageUrl}}" style="width: 100%;">
+      </div>
+    </div>
+    <!-- <ul class="notification" *ngIf="badgesData?.length > 0">
+      <li *ngFor="let badge of badgesData">
+        <span class="faintblue">{{badge.name}}</span>
+      </li>
+    </ul> -->
+</div>

@@ -1,0 +1,61 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="d-flex mb-3 pt-3">
+            <div class="userprof">
+                <img src="assets/images/blankUser.webp" alt="">
+            </div>
+            <div class="userdialogbox w-100 ms-3">
+                <h6 class="fw-bold font9rem">{{review.firstName}}
+                    <span class="fw-light ms-3" style="font-size: .75rem">{{reviewAt}}</span>
+                    <span *ngIf="isVendor && !review.isMaker && review.reviewStatus == 'add'" 
+                        (click)="onApproveReview(review._id)"
+                        class="badge bg-success ms-2 cursorpointer font6rem"
+                    >Approve</span>
+                </h6>
+                <div class="pt-2">
+                    <div class="mb-2">
+                        <div class="reviewrating">
+                            <app-rating [rating]="review?.reviewRating"></app-rating>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <h5>{{review.reviewTitle}}</h5>
+                        <p class="fontsm">{{review.reviewText}}</p>
+                    </div>
+                </div>
+                <div class="d-flex mt-2 align-items-center">
+                    <div class="px-1 d-flex align-items-center" (click)="onLikeClick()">
+                        <span class="fontsm">{{review.likeCount < 0 ? 0 : review.likeCount}}</span>
+                        <!-- <i [ngClass]="review.userLikeCount == 0  ? 'bi bi-suit-heart ms-1' : 'bi bi-suit-heart-fill ms-1'"></i> -->
+                        <img *ngIf="review.userLikeCount == 0 " src="assets/clap.png" alt="like" width="24">
+                        <img *ngIf="review.userLikeCount > 0 " src="assets/clap-filled.png" alt="like-filled" width="24"> 
+                    </div>
+                    <p class="font7rem ms-3" 
+                        *ngIf="canReply"
+                        (click)="
+                            setActiveReview.emit({
+                                id: review._id,
+                                type: activeReviewType.replying
+                            })"
+                        >Reply
+                    </p>
+                </div>
+                <reply-form
+                    [currentUser]="currentUser"
+                    [hasCancelButton]="true"
+                    *ngIf="isReplying()"
+                    submitLabel="Reply"
+                    (handleSubmit)="addReply($event)"
+                    (handleCancel)="setActiveReview.emit(null)"
+                ></reply-form>
+                <div *ngIf="replies.length > 0">
+                    <div *ngFor="let reply of replies">
+                        <review-reply [reply]="reply" [isVendor]="isVendor" [currentUser]="currentUser"></review-reply>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

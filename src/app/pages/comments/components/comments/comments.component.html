@@ -1,0 +1,19 @@
+<div class="comments" *ngIf="comments.length > 0">  
+  <div>
+    <div>
+      <comment
+      *ngFor="let rootComment of comments"
+      [comment]="rootComment"
+      [replies]="[]"
+      [activeComment]="activeComment"
+      (setActiveComment)="setActiveComment($event)"
+      [currentUser]="currentUser"
+      [currentStartupId]="currentStartupId"
+      [isVendor]="isVendor"
+      [startupUserId]="startupUserId"
+    >
+    </comment>
+    </div>
+  </div>
+</div>
+<p *ngIf="comments.length == 0" class="text-center py-3">No Comment's on this product yet! Be the first one.</p>

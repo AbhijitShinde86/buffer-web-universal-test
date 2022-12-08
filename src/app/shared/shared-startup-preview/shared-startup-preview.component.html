@@ -1,0 +1,230 @@
+<div  style="min-height: 500px;" *ngIf="startup?.startupStatus=='acc'">
+    <div *ngIf="startup">
+        <section class="py-4" style="background-color: #fff;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 offset-md-1">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb font8rem">
+                              <li class="breadcrumb-item"><a routerLink="/" class="text-black text-decoration-none">Home</a></li>
+                              <li class="breadcrumb-item"><a routerLink="{{betaBaseUrl}}" class="text-black text-decoration-none">beta-listing</a></li>
+                              <li class="breadcrumb-item active" aria-current="page">{{startup?.productName}}</li>
+                            </ol>
+                        </nav>
+                        <div class="d-lg-flex">
+                            <div class="mb-2 mb-lg-0">
+                            <h1 class="fw-bold h3">{{startup?.productName}}</h1>
+                            <p class="w600 color555">{{startup?.shortDesc}}</p>
+                            </div>
+                            <div class="d-flex align-items-center ms-lg-5 justify-content-lg-center">
+                                
+                                <!-- <div class="ms-3 mt-2">
+                                    <a class="btn btn-primary fontsm" [href]="startup?.websiteUrl" target="_blank">Visit Website</a>
+                                </div> -->
+                                
+                                <a class="btn btn-visitweb fontsm" [href]="startup?.websiteUrl" target="_blank" role="button">Visit Website</a>
+    
+                                <div class="ms-3" *ngIf="startupExpired">
+                                    <button class="btn btn-outline-dark fontsm w-100">Launch ended</button>
+                                </div>
+                                <div *ngIf="!startupExpired">
+                                    <div class="mb-0 ms-4" *ngIf="user?.id != startup?.userId?._id">
+                                        <div class="mt-0" *ngIf="startup?.requestCount == 0 ">
+                                            <button class="btn btn-share fontsm w-100" (click)="onJoinBetaClick(startup?.startupLink)">Join Beta</button>
+                                        </div>
+                                        <div class="mt-2" *ngIf="startup?.requestCount > 0 && startup?.requestFilter[0].reqStatus == 'ADD'">
+                                            <button class="btn btn-outline-dark fontsm w-100">Requested</button>
+                                        </div>
+                                        <div class="mt-2" *ngIf="startup?.requestCount > 0 && startup?.requestFilter[0].reqStatus == 'APV'">
+                                            <button *ngIf="startup?.userFeedbackCount > 0" class="btn btn-share fontsm w-100" >Feedback Submited</button>
+                                            <button *ngIf="startup?.userFeedbackCount <= 0" class="btn btn-share fontsm w-100" (click)="onStartupFeedbackClick(startup?.startupLink)">Submit Feedback</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="pb-4">
+            <div class="container">
+            <div class="row">
+                <div class="col-md-7 offset-md-1">
+                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div *ngIf="startup?.imagePaths?.length == 0">    
+                                <div class="carousel-item active">             
+                                    <img src="assets/gradientbg.png" class="d-block w-100 rounded">
+                                </div>   
+                            </div>
+                            <div *ngIf="startup?.imagePaths?.length > 0">    
+                                <div class="carousel-item" 
+                                [ngClass]="[i ==0 ? 'active' : '']" 
+                                *ngFor="let image of startup?.imagePaths; let i = index;">
+                                    <!-- <img src="..." class="d-block w-100" alt="..."> -->
+                                    <img src="{{image.url_preview}}" class="d-block w-100 rounded">
+                                </div>
+                            </div>                
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+    
+                    
+                    <div class="pt-4">
+                        <p class="mb-3" [innerHtml]=startup?.description></p>
+                    </div>
+                    <div class="d-flex">
+                        <button class="btn btn-neutral btn-sm me-3" *ngFor="let mar of startup?.markets">{{mar.marketName}}</button>
+                    </div>
+
+                    <div class="p-4 mt-4 rounded aliceblue" *ngIf="startup?.offers || startup?.offers != ''" >
+                        <h6 class="mb-3">Offer For BufferAppps Community:-</h6>
+                        <p class="font9rem">{{startup?.offers}}</p>
+                    </div>
+    
+                    <div class="p-4 mt-4 foundersnotebg" *ngIf="startup?.founderNote">
+                        <h4 class="text-center">Founder's Note</h4>
+                        <hr class="w-15 founderdivider m-auto mb-3">
+                        <p [innerHtml]=startup?.founderNote></p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-2 mt-3 mt-lg-0 text-center stickysidebar border">
+                        <div class="mb-3">
+                            <h5 class="mt-3">Makers</h5>
+                            <div *ngIf="startup?.userId" class="userprof mb-2 d-flex align-items-center justify-content-center cursorpointer">
+                                <div *ngIf="!startup?.userId?.photoUrl?.url_preview"><img src="assets/images/blankUser.webp" alt="{{startup?.userId?.name}}" ></div>
+                                <div *ngIf="startup?.userId?.photoUrl?.url_preview">
+                                    <img src="{{startup?.userId?.photoUrl?.url_preview}}" (error) ="$event.target.src = 'assets/images/blankUser.webp'" alt="{{startup?.userId?.name}}">
+                                </div>
+                                <h6 class="ms-2 mb-0 font9rem">{{startup?.userId?.name}} | <span>Founder</span></h6>
+                            </div>
+                        </div>
+                        <div class="px-2 px-lg-1 mt-2 d-flex align-items-center justify-content-center m-like prclap" (click)="onLikeClick()">
+                            <span class="me-2 mt-1">{{startup?.likeCount}}</span>
+                            <!-- <i [ngClass]=" startup?.userLikeCount == 0  ? 'bi bi-suit-heart' : 'bi bi-suit-heart-fill'"></i> -->
+                            <!-- <svg *ngIf="startup.userLikeCount == 0 " xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                            </svg>
+                            <svg *ngIf="startup.userLikeCount > 0 " xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"></path>
+                            </svg> -->
+                            <img *ngIf="startup.userLikeCount == 0 " src="assets/clap.png" alt="like" width="32">
+                            <img *ngIf="startup.userLikeCount > 0 " src="assets/clap-filled.png" alt="like-filled" width="32">
+                            <p class="ms-2 mt-1">Clap</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center py-4">
+                            <div class="px-1 ms-2 bg-white">
+                                <span class="fontsm me-1">{{startup?.commentCount}}</span>
+                                <!-- <i class="bi bi-chat-square"></i> -->
+                                <img src="assets/chat.png" alt="chat" width="32">
+                            </div>
+                            <div>
+                                <p type="button" class="px-3 btn-sm" (click)="onShowShareModel()">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share-fill" viewBox="0 0 16 16">
+                                    <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"/>
+                                  </svg> 
+                                share</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3" *ngIf="startup?.facebookUrl || startup?.twitterUrl || startup?.linkedinUrl">
+                            <h6 class="mb-3 font9rems">Follow {{startup?.productName}}</h6>
+                            <div>
+                                <a *ngIf="startup?.facebookUrl" target="_blank" [href]="getFacebookUrl(startup?.facebookUrl)" class="followstartup fbcolor me-1"><i class="bi bi-facebook"></i></a>
+                                <a *ngIf="startup?.twitterUrl" target="_blank" [href]="getTwitterUrl(startup?.twitterUrl)" class="followstartup twicolor me-1"><i class="bi bi-twitter"></i></a>
+                                <a *ngIf="startup?.linkedinUrl" target="_blank" [href]="getLinkedinUrl(startup?.linkedinUrl)" class="followstartup lnkedcolor"><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                        
+                        <div *ngIf="user?.id != startup?.userId?._id">
+                            <p class="fontsm reportcolor" (click)="onShowReportModel()"><i class="bi bi-flag"></i> Report this startup</p>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+        <section class="py-5" style="background-color: #FFFEFC;">
+            <div class="container">
+                <div class="row">
+                <div class="col-md-8 offset-md-2">
+                <!-- <h4 class="fw-bold d-flex align-items-center mb-3"><img src="assets/images/chat.png"><span class="ms-3">Discussion</span></h4> -->
+                    
+                <div class="d-flex align-items-center mb-4 border-bottom">
+                    <h6 class="pb-2 mb-0 cursorpointer" [ngClass]="cutTab =='comment' ? 'activecomm' :''" (click)="cutTab ='comment'">Comments</h6>
+                    <h6 class="pb-2 mb-0 ms-4 cursorpointer" [ngClass]="cutTab =='feedback' ? 'activecomm' :''" (click)="cutTab ='feedback'">Feedback</h6>
+                </div>
+    
+                <div *ngIf="cutTab =='comment'">
+                    <div class="mb-3 pb-3 border-bottom" *ngIf="user">
+                        <div class="d-flex">
+                            <div class="userprof">
+                                <div *ngIf="!user?.photoUrl"><img src="assets/images/blankUser.webp" alt="{{user.name}}" ></div>
+                                <div *ngIf="user?.photoUrl">
+                                    <img src="{{user?.photoUrl}}" (error) ="$event.target.src = 'assets/images/blankUser.webp'" alt="{{user.name}}">
+                                </div>
+                            </div>
+                            <div class="userdialogbox w-100 ms-3">
+                                <h6 class="fw-bold">{{user.firstName}}</h6>
+                                <!-- <textarea class="form-control my-3" rows="3" [(ngModel)]="commentText"></textarea> -->
+                                <ng-container *ngIf="isBrowser">
+                                    <quill-editor [modules]="quillConfig" [(ngModel)]="commentText" [styles]="{height: 'auto', border: 'none' }"  ></quill-editor>
+                                </ng-container>
+                                <div class="text-end mt-2"><button class="btn btn-pstcom btn-sm" (click)="postComment()">Post Comment</button></div>
+                            </div>
+                        </div>
+                    </div>    
+                    <comments [comments]="comments" currentStartupId="{{startup?._id}}" [currentUser]="user" [isVendor]="isVendor" [startupUserId]="startup?.userId?._id"></comments>
+                    <div *ngIf="!user">
+                        <p class="comment-msg" (click)="onLaunchLogin()"> {{ comments.length > 0 ? 'Join to leave a comment' : 'Join to start off the discussion' }}</p>
+                    </div>
+                </div>
+                
+                <div *ngIf="cutTab =='feedback'">
+                    <feedbacks [feedbacks]="feedbacks" currentStartupId="{{startup?._id}}" [currentUser]="user" [isVendor]="isVendor" [startupUserId]="startup?.userId?._id"></feedbacks>
+                    
+                    <div class="mb-4" *ngIf="startupExpired">
+                        <div class="mt-2 text-center">
+                            <button class="btn btn-outline-dark fontsm w-35 mw-100">Launch ended</button>
+                        </div>
+                    </div>
+                    <div *ngIf="!startupExpired">
+                        <div class="mb-4 text-center" *ngIf="user?.id != startup?.userId?._id">
+                            <div class="mt-2" *ngIf="startup?.requestCount == 0 ">
+                                <button class="btn btn-dark fontsm w-35 mw-100" (click)="onJoinBetaClick(startup?.startupLink)">Join Beta</button>
+                            </div>
+                            <div class="mt-2" *ngIf="startup?.requestCount > 0 && startup?.requestFilter[0].reqStatus == 'ADD'">
+                                <button class="btn btn-outline-dark fontsm w-35 mw-100">Requested</button>
+                            </div>
+                            <div class="mt-2" *ngIf="startup?.requestCount > 0 && startup?.requestFilter[0].reqStatus == 'APV'">                        
+                                <!-- <button *ngIf="startup?.userFeedbackCount > 0" class="btn btn-dark fontsm w-100" >Feedback Submited</button> -->
+                                <button *ngIf="startup?.userFeedbackCount <= 0" class="btn btn-dark fontsm w-35 mw-100" (click)="onStartupFeedbackClick(startup?.startupLink)">Submit Feedback</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<section class="py-5" *ngIf="startup?.startupStatus=='fet'">
+    <div class="container">
+        <div class="404 text-center">
+            <img src="/assets/ba-logo.jpg" alt="" width="150" class="pb-5"><br>
+            <img src="/assets/404.svg" alt="" width="200" class="mw-100">
+            <h3 class="py-5">Product featured successfully</h3>
+            <a (click)="onGoToProduct()" class="btn btn-primary">Go to Product</a>
+        </div>
+    </div>
+</section>

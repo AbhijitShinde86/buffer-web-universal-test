@@ -1,0 +1,17 @@
+<section class="py-5">
+    <div class="container">
+        <div class="mb-3">
+            <h2>Categories</h2>
+        </div>
+        <div style="min-height: 400px;">
+            <div class="row">
+                <div class="col-md-3" *ngFor="let category of categoriesData">
+                    <div class="d-flex align-items-center justify-content-between p-3 mb-4 categorylist" (click)="onSelectedCategoriesClick(category.marketLink)">
+                        <p>{{category.marketName}}</p>
+                        <p>{{category.startupCount}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

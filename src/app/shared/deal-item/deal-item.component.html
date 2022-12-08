@@ -1,0 +1,28 @@
+<div *ngIf="deal">
+    <div class="border rounded-3 dealcard position-relative">
+        <div style="cursor:pointer;" (click)="onDealClick()">
+            <div class="ribbon" *ngIf="deal?.isPremium"><span class="font8rem fw-bold">Premium</span></div>
+            <div class="position-relative">
+              <p class="offerends fontsm" *ngIf="deal?.remainDays <= 15 ">Offer Ends In {{deal?.remainDays}} Days</p>
+              <div *ngIf="deal?.imagePaths?.length == 0"><img src="assets/gradientbg.png" alt="{{deal?.dealName}}" class="w-100 rounded-3"></div>
+              <div *ngIf="deal?.imagePaths?.length > 0">
+                  <img src="{{deal?.imagePaths[0].url_preview}}" (error) ="$event.target.src = 'assets/gradientbg.png'" alt="{{deal?.dealName}}" class="w-100 rounded-3">
+              </div>
+            </div>
+            <div class="p-3">
+                <h6 class="fw-bold">{{deal?.dealName}}</h6>
+                <p class="font8rem" style="min-height: 40px; max-height: 80px;">{{deal?.shortDesc}}</p>
+                <span class="badge mt-2 font6rem" [ngClass]="getDealTypeClass(deal?.dealType)" >{{getDealTypeName(deal?.dealType)}}</span>
+                <!-- <span *ngIf="deal?.plans.length > 0" class="badge bg-primary mt-2 font6rem">{{deal?.plans[0].planName}}</span> -->
+                <div class="ratingoverview mt-2">
+                    <app-rating [rating]="deal?.dealRating"></app-rating>
+                    <span *ngIf="deal?.reviewCount > 0" class="ms-3 cursorpointer colorblue font8rem">{{deal?.reviewCount}} Reviews</span>
+                </div>
+                <div *ngIf="deal?.plans.length > 0" class="d-flex align-items-center mt-2">
+                    <h6 class="mb-0 fw-bold">{{deal?.plans[0].currencySign}}{{deal?.plans[0].discPrice}}</h6>
+                    <p class="ms-2 text-decoration-line-through fontsm" style="color: #9f9c9c;">{{deal?.plans[0].currencySign}}{{deal?.plans[0].price}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

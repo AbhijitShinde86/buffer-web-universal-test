@@ -1,0 +1,26 @@
+
+<div class="d-flex mb-3 pt-3">
+    <div class="userprof">
+        <div *ngIf="!reply.photoUrl"><img src="assets/images/blankUser.webp" alt="{{reply.firstName}}" ></div>
+        <div *ngIf="reply.photoUrl">
+            <img src="{{reply.photoUrl}}" (error) ="$event.target.src = 'assets/images/blankUser.webp'" alt="{{reply.firstName}}">
+        </div>
+    </div>
+    <div class="userdialogbox w-100 ms-3">
+        <h6 class="fw-bold font9rem">{{reply.firstName}}
+            <span class="fw-light ms-3" style="font-size: .75rem">{{replyAt}}</span>
+            <span *ngIf="reply.isMaker" class="badge bg-primary ms-2" style="font-size: .7rem">Maker</span>
+            <span *ngIf="isVendor && !reply.isMaker && reply.reviewReplyStatus == 'add'" (click)="onApproveReviewReply(reply._id)"
+            class="badge bg-success ms-2 cursorpointer font7rem">Approve</span>
+        </h6>
+        <p class="fontsm" [innerHtml]=reply.reviewReplyText></p>
+        <div class="d-flex mt-2 align-items-center">
+            <div class="px-1 d-flex align-items-center" (click)="onReviewReplyLikeClick()">
+                <span class="fontsm">{{reply.likeCount < 0 ? 0 : reply.likeCount}}</span>
+                <!-- <i [ngClass]="reply.userLikeCount == 0  ? 'bi bi-suit-heart ms-1' : 'bi bi-suit-heart-fill ms-1'"></i> -->
+                <img *ngIf="reply.userLikeCount == 0 " src="assets/clap.png" alt="like" width="24">
+                <img *ngIf="reply.userLikeCount > 0 " src="assets/clap-filled.png" alt="like-filled" width="24"> 
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,258 @@
+<section class="py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <p class="mb-3 cursorpointer" (click)="onGoBack()"><i class="bi bi-arrow-left-circle-fill me-2"></i> Return To Cart</p>
+        <h3 class="fw-bold mb-5">Checkout</h3>
+      </div>
+      <div class="col-md-9" style="text-align: right;">
+        <div class="mb-5">
+          <h6>Your Order confirmation will be emailed to</h6>
+          <p class="checkoutblue fw-bold">{{user.email}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+        <div class="border">
+          <div>
+            <h5 class="orderbox p-3">Payment Details</h5>
+          </div>
+          <div class="p-3" style="min-height: 250px;">
+            <ng-container *ngIf="elementsOptions?.clientSecret">
+              <ngx-stripe-payment [appearance]="appearance" [clientSecret]="elementsOptions?.clientSecret">
+              </ngx-stripe-payment>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="border">
+          <div>
+            <h5 class="orderbox p-3">Order</h5>
+          </div>
+          <div class="p-3" style="min-height: 250px;">
+            <div class="d-flex align-items-center justify-content-between mb-3" *ngFor="let deal of deals">
+              <div>
+                <p class="fontsm">{{deal.dealName}}</p>
+                <p class="font8rem color777">QTY:{{deal.quantity}}</p>
+              </div>
+              <p>{{deal.currencySign}}{{deal.discPrice * deal.quantity}}</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <p class="fontsm">Reward</p>
+              <p class="cartgreen">-{{appCurSign}}{{rewardAmt}}</p>
+            </div>
+            <div *ngIf="discAmt > 0 " class="d-flex align-items-center justify-content-between mb-3">
+              <p class="fontsm">Discount</p>
+              <p class="cartgreen">-{{appCurSign}}{{discAmt}}</p>
+            </div>
+            <!-- <div class="mb-2 pb-3 border-bottom">
+                        <div class="d-flex">
+                            <input class="form-control" type="text" name="">
+                            <button class="btn btn-primary w-50 fontsm ms-2">Apply Code</button>
+                        </div>
+                    </div> -->
+            <!-- <em class="font8rem greensucess">"FLAT20" code appiled sucessfully.</em>
+                      <em class="font8rem red">Invalid code or offer might be expired.</em> -->
+            <div style="margin-bottom: 60px;"></div>
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <p class="fw-bold">Total</p>
+              <p class="fw-bold">{{appCurSign}}{{totalAmt}}</p>
+            </div>
+            <div class="pt-2">
+              <button *ngIf="paymentFormLoaded" class="btn btn-success w-100" (click)="onPlaceOrder()"
+                [disabled]="isLoading"><i class="bi bi-lock"></i>
+                Place Order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Old HTML -->
+<!-- <section class="py-5">
+    <div class="container">
+        <p class="mb-3 cursorpointer"><i class="bi bi-arrow-left-circle-fill me-2"></i> Return To Cart</p>
+        <h3 class="fw-bold mb-5">Checkout</h3>
+        <div class="row">
+            <div class="col-md-7">
+              <div class="mb-5">
+                  <h6>Your Order confirmation will be emailed to:</h6>
+                  <p class="checkoutblue fw-bold">{{user.email}}</p>
+              </div>
+
+              <div class="border">
+                    <div><h5 class="orderbox p-3">Add Payment Details</h5></div>
+                    <div class="p-3">
+                        <div class="form-check mb-4" *ngFor="let card of cards">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio_{{card._id}}" 
+                            [checked]="selectedCard == card" (click)="selectedCard = card"/>
+
+                          <label class="form-check-label" for="flexRadioDefault1">
+                            <div class="row d-flex align-items-center">
+                              <div class="col-md-10">
+                                  <h6 class="mb-0">Card Ends with: {{getLastFourDigit(card.cardNo)}}</h6>
+                                  <p class="font8rem color777">Expiry: {{card.expiryDate}}</p>
+                              </div>
+                              <div class="col-md-2">
+                                <img [src]="getIssuerIcon(card.cardType)" [alt]="card.cardType" class="w-100 rounded-3">
+                              </div>
+                            </div>
+                          </label>
+                        </div>
+                        <div>
+                            <p class="checkoutblue fw-bold fontsm ms-4 cursorpointer" (click)="onShowCreditCardModal()">+ Add New Credit Card</p>
+                        </div>
+                    </div>
+              </div>
+                
+            </div>
+
+            <div class="col-md-5">
+                <div class="border">
+                    <div><h5 class="orderbox p-3">Order</h5></div>
+                    <div class="p-3">
+                        <div class="d-flex align-items-center justify-content-between mb-3" *ngFor="let deal of deals">
+                          <div><p class="fontsm">{{deal.dealName}}</p><p class="font8rem color777">QTY:{{deal.quantity}}</p></div>
+                          <p>{{deal.currencySign}}{{deal.discPrice * deal.quantity}}</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                          <p class="fontsm">Reward</p>
+                          <p class="cartgreen">-{{appCurSign}}{{rewardAmt}}</p>
+                        </div>
+                        <div *ngIf="discAmt > 0 " class="d-flex align-items-center justify-content-between mb-3">
+                          <p class="fontsm">Discount</p>
+                          <p class="cartgreen">-{{appCurSign}}{{discAmt}}</p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                          <p class="fw-bold">Total</p>
+                          <p class="fw-bold">{{appCurSign}}{{totalAmt}}</p>
+                        </div>
+                        <div class="pt-2">
+                          <button class="btn btn-success mb-3 w-100" (click)="onCreateCheckouSession()" [disabled]="isLoading" ><i class="bi bi-lock"></i> 
+                          Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div [ngStyle]="{'display':creditCardModalDisplay}" class="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Credit Card</h5>
+        <button type="button" class="btn-close" (click)="creditCardModalDisplay = 'none'"></button>
+      </div>
+      <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body addcardtext">
+            <div class="row">              
+                <div class="mb-3 row">
+                  <div class="col-md-10">
+                    <label class="mb-1 fontsm fw-bold">Credit Card Number</label>
+                    <input type="text" class="form-control" formControlName="cardNo"
+                    [maxlength]="maxLength"
+                    (keyup)="validate()"
+                    [imask]="imask"
+                    [unmask]="true"
+  
+                      [ngClass]="[submitted && f.cardNo.errors ? 'is-invalid' : '']" 
+                    >
+                    <div *ngIf="submitted && f.cardNo.errors" class="invalid-feedback">
+                      <div *ngIf="f.cardNo.errors.required">Card number is required</div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">                   
+                    <div class="position-relative">
+                      <img  *ngIf="validationRes?.card" [src]="getIssuerIcon(validationRes.card.type)" alt="validationRes.card.type" class="w-100 rounded-3" style="margin-top: 50%;">
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-md-4">
+                        <label class="mb-1 fontsm fw-bold">Expiry Date</label>
+                        <input type="text" class="form-control" placeholder="00/00" [imask]="{mask:'00/00'}" formControlName="expiryDate" 
+                          [ngClass]="[submitted && f.expiryDate.errors ? 'is-invalid' : '',  submitted && !f.expiryDate.errors ? 'is-valid' : '']" 
+                        >
+                        <div *ngIf="submitted && f.expiryDate.errors" class="invalid-feedback">
+                          <div *ngIf="f.expiryDate.errors.required">Expiry is required</div>
+                          <div *ngIf="f.expiryDate.errors.pattern">Invalid expiry</div>   
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="mb-1 fontsm fw-bold">CVV</label>
+                        <input type="text" class="form-control" formControlName="cvvNo" [maxlength]="maxCvvLength" numbersOnly
+                          [ngClass]="[submitted && f.cvvNo.errors ? 'is-invalid' : '',  submitted && !f.cvvNo.errors ? 'is-valid' : '']" 
+                        >
+                        <div *ngIf="submitted && f.cvvNo.errors" class="invalid-feedback">
+                          <div *ngIf="f.cvvNo.errors.required">CVV is required</div>
+                          <div *ngIf="f.cvvNo.errors.minlength">Invalid CVV</div>                          
+                        </div>
+                    </div>
+                </div>                
+                <div class="mb-3">
+                  <label class="mb-1 fontsm fw-bold">Full Name On Card</label>
+                  <input type="text" class="form-control" formControlName="fullName" 
+                    [ngClass]="[submitted && f.fullName.errors ? 'is-invalid' : '',  submitted && !f.fullName.errors ? 'is-valid' : '']" 
+                  >
+                  <div *ngIf="submitted && f.fullName.errors" class="invalid-feedback">
+                    <div *ngIf="f.fullName.errors.required">Full name is required</div>
+                  </div>
+              </div>
+                <div class="mb-3">
+                    <label class="mb-1 fontsm fw-bold">Billing Address</label>
+                    <input type="text" class="form-control" formControlName="address">
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-md-6">
+                        <label class="mb-1 fontsm fw-bold">City</label>
+                        <input type="text" class="form-control" formControlName="city">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="mb-1 fontsm fw-bold">State</label>
+                        <input type="text" class="form-control" formControlName="state">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-md-6">
+                        <label class="mb-1 fontsm fw-bold">Zip/Pin code</label>
+                        <input type="text" class="form-control" formControlName="pinCode">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="mb-1 fontsm fw-bold">Country</label>
+                        <select class="form-select" class="form-select" formControlName="country"
+                              [ngClass]="[submitted && f.country.errors ? 'is-invalid' : '',  submitted && !f.country.errors ? 'is-valid' : '']"
+                          >
+                            <option value="us">United States</option>
+                            <option value="ind">India</option>
+                        </select>
+                        <div *ngIf="submitted && f.country.errors" class="invalid-feedback">
+                          <div *ngIf="f.country.errors.required">Country is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn fontsm" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary fontsm">Add New Card</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="mb-2 pb-3 border-bottom">
+    <div class="d-flex">
+        <input class="form-control" type="text" name="">
+        <button class="btn btn-primary w-50 fontsm ms-2">Apply Code</button>
+    </div>
+</div> -->
+<!-- <em class="font8rem greensucess">"FLAT20" code appiled sucessfully.</em>
+  <em class="font8rem red">Invalid code or offer might be expired.</em> -->
